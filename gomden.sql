@@ -25,7 +25,7 @@ CREATE TABLE "usedtokens" (
 
 # Upon setting up the site, the first user to create an acccount is granted the
 # ROOT and ADMIN roles
-INSERT INTO roles (userid, role) VALUES (1, 'ROOT');
-INSERT INTO roles (userid, role) VALUES (1, 'ADMIN');
+INSERT INTO roles (userid, role) VALUES (1, '*ROOT*');
+INSERT INTO roles (userid, role) VALUES (1, '*ADMIN*');
 
 COMMIT;

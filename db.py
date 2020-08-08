@@ -6,6 +6,12 @@ import config
 import functools
 import random
 
+# This might come in handy later:
+#   SELECT u.username, STRING_AGG(r.role, ',')
+#   FROM users u
+#   LEFT JOIN roles r ON (u.userid = r.userid)
+#   WHERE u.userid=1;
+
 # Error rollback everywhere
 # TODO: logging
 
@@ -49,7 +55,7 @@ def toUserJson(record):
         "email": record[3],
         "password_hash": record[4],
         "setup_state": record[5],
-        "ts": record[6],
+        "ts": record[6]
     }
 
 @ErrorRollback
@@ -60,14 +66,23 @@ def getConfirmedUserByUserid(userid):
         SELECT userid, username, displayname, email, password_hash, setup_state, ts
         FROM users WHERE userid=%s AND setup_state='EMAIL_CONFIRMED'""", (userid,))
     result = c.fetchone()
+    
+    # TODO: raise exception?
+    if not result:
+        c.close()
+        conn.commit()
+        return None
+
+    user = toUserJson(result)
+
+    c.execute("""
+        SELECT role FROM roles WHERE userid=%s""", (userid,))
+    user["roles"] = [r[0] for r in c.fetchall()]
+
     c.close()
     conn.commit()
 
-    # TODO: raise exception
-    if not result:
-        return None
-
-    return toUserJson(result)
+    return user
 
 @ErrorRollback
 def getConfirmedUsersByUserids(userids):
@@ -80,8 +95,6 @@ def getConfirmedUsersByUserids(userids):
             pass # TODO: raise exception
     return results
 
-
-
 # TODO: get roles too
 @ErrorRollback
 def getConfirmedUserByUsername(username):
@@ -91,13 +104,23 @@ def getConfirmedUserByUsername(username):
         SELECT userid, username, displayname, email, password_hash, setup_state, ts
         FROM users WHERE username=%s AND setup_state='EMAIL_CONFIRMED'""", (username,))
     result = c.fetchone()
+    
+    # TODO: raise exception?
+    if not result:
+        c.close()
+        conn.commit()
+        return None
+
+    user = toUserJson(result)
+
+    c.execute("""
+        SELECT role FROM roles WHERE userid=%s""", (userid,))
+    user["roles"] = [r[0] for r in c.fetchall()]
+
     c.close()
     conn.commit()
 
-    if not result:
-        return None
-
-    return toUserJson(result)
+    return user
 
 @ErrorRollback
 def getConfirmedUserByUsernameEmail(username, email):
@@ -107,13 +130,23 @@ def getConfirmedUserByUsernameEmail(username, email):
         SELECT userid, username, displayname, email, password_hash, setup_state, ts
         FROM users WHERE username=%s AND email=%s setup_state='EMAIL_CONFIRMED'""", (username, email))
     result = c.fetchone()
+    
+    # TODO: raise exception?
+    if not result:
+        c.close()
+        conn.commit()
+        return None
+
+    user = toUserJson(result)
+
+    c.execute("""
+        SELECT role FROM roles WHERE userid=%s""", (userid,))
+    user["roles"] = [r[0] for r in c.fetchall()]
+
     c.close()
     conn.commit()
 
-    if not result:
-        return None
-
-    return toUserJson(result)
+    return user
 
 class ShouldBeImpossible(Exception):
    pass
@@ -121,7 +154,7 @@ class ShouldBeImpossible(Exception):
 class MultipleConfirmedAccounts(Exception):
     pass
 
-# TODO: get roles too
+# IMPORTANT NOTE: the roles field will not exist within results
 @ErrorRollback
 def getAllUsersForAnySetupStateByEmail(email):
     conn = getConn()
@@ -206,6 +239,7 @@ def updateConfirmedPasswordByUsernameEmail(email, password_hash):
         conn.rollback()
         raise UpdatePasswordByUsernameEmailError
 
+# IMPORTNANT NOTE: the returned user dict will not have a role field
 @ErrorRollback
 def getUnconfirmedUserByUsernameEmail(username, email):
     conn = getConn()
@@ -221,6 +255,7 @@ def getUnconfirmedUserByUsernameEmail(username, email):
         return None
     else:
         return toUserJson(result)
+
 
 
 class ConfirmUsernameEmailErrorRowCountNotOne(Exception):
@@ -257,13 +292,23 @@ def getConfirmedUserByEmail(email):
         SELECT userid, username, displayname, email, password_hash, setup_state, ts
         FROM users WHERE email=%s AND setup_state='EMAIL_CONFIRMED'""", (email,))
     result = c.fetchone()
+    
+    # TODO: raise exception?
+    if not result:
+        c.close()
+        conn.commit()
+        return None
+
+    user = toUserJson(result)
+
+    c.execute("""
+        SELECT role FROM roles WHERE userid=%s""", (userid,))
+    user["roles"] = [r[0] for r in c.fetchall()]
+
     c.close()
     conn.commit()
 
-    if not result:
-        return None
-
-    return toUserJson(result)
+    return user
 
 @ErrorRollback
 def getConfirmedUserByUsernameOrEmail(usernameOrEmail):
