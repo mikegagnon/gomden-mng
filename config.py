@@ -1,0 +1,88 @@
+import re
+import os
+
+SECRET_KEY = os.environ["SECRET_KEY"]
+ADMIN_EMAIL = os.environ["ADMIN_EMAIL"]
+NOREPLY_EMAIL = "noreply@sidewise.academy" #NOREPLY_EMAIL = "noreply@zabuton.wiki" # TODO: SITENAME SITEDOMAIN?
+FLASK_EMAIL_SERVER = os.environ["FLASK_EMAIL_SERVER"]
+FLASK_EMAIL_PASSWORD = os.environ["FLASK_EMAIL_PASSWORD"]
+REDIS_URL = os.environ["REDIS_URL"]
+
+MIN_USERNAME_LEN = 3
+MAX_USERNAME_LEN = 15
+
+MIN_DISPLAYNAME_LEN = 1
+MAX_DISPLAYNAME_LEN = 30
+
+USERNAME_RE = re.compile(r"^[a-z][a-z0-9\-]+$", re.UNICODE)
+
+MIN_EMAIL_LEN = 5
+MAX_EMAIL_LEN = 254
+
+MIN_PASSWORD_LEN = 3
+MAX_PASSWORD_LEN = 64
+
+MAX_TOKEN_AGE = 86400 # 24 hours
+
+DUMMY_HASH="$2b$12$iqrN79syuOte2ZHdDASDF.ASDF."
+
+BAD_PASSWORD_MESSAGE = """Incorrect password. Or you have not created and confirmed your account (i.e., confirmed your account via the confirmation-link email)."""
+
+FORGOT_PASSWORD_MESSAGE = """Check your email for a link to reset your password. But, if you haven't yet created and confirmed your account (via the confirmation-link email), you will not receive an email."""
+
+def saneUsername(username):
+    return (
+        len(username) >= MIN_USERNAME_LEN and
+        len(username) <= MAX_USERNAME_LEN and
+        USERNAME_RE.match(username)
+    )
+
+def trimDisplayName(displayname):
+    displayname = displayname.strip()
+    displayname = re.sub(r"\s\s+", " ", displayname)
+    return displayname
+
+
+def saneDisplayName(displayname):
+    return (
+        len(displayname) >= MIN_DISPLAYNAME_LEN and
+        len(displayname) <= MAX_DISPLAYNAME_LEN
+    )
+
+def saneEmail(email):
+    return (
+        len(email) >= MIN_EMAIL_LEN and
+        len(email) <= MAX_EMAIL_LEN
+    )
+
+# TODO regex for sanePasswords
+def sanePassword(password):
+    return (
+        len(password) >= MIN_PASSWORD_LEN and
+        len(password) <= MAX_PASSWORD_LEN
+    )
+
+MIN_DOCNAME_LEN = 1
+MAX_DOCNAME_LEN = 500
+
+def saneDocname(docname):
+    return (
+        len(docname) >= MIN_DOCNAME_LEN and
+        len(docname) <= MAX_DOCNAME_LEN
+    )
+
+MIN_TOPIC_LEN = 1
+MAX_TOPIC_LEN = 500
+def saneTopic(topic):
+    return (
+        len(topic) >= MIN_TOPIC_LEN and
+        len(topic) <= MAX_TOPIC_LEN
+    )
+
+MIN_SUBJECT_LEN = 1
+MAX_SUBJECT_LEN = 100
+def saneSubject(subject):
+    return (
+        len(subject) >= MIN_SUBJECT_LEN and
+        len(subject) <= MAX_SUBJECT_LEN
+    )

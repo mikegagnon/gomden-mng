@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}Create account - SITENAME{% endblock %}
+{% block create_account_active %}active{% endblock %}
+{% block content %}
+
+<main role="main" class="container">
+<form action="{{ url_for('account_blueprint.create_account') }}" method="post">
+
+    {% if message %}
+      <div class="alert alert-warning" role="alert">
+        <p>{{ message }}</p>
+      </div>
+    {% endif %}
+
+    <div class="mb-3">
+      <label for="username">Username</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">@</div>
+        </div>
+        <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="username">Display name</label>
+      <div class="input-group">
+        <input type="text" class="form-control" name="displayname" id="displayname" placeholder="Display name" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email">Email</label>
+      <div class="input-group">
+        <input type="text" class="form-control" name="email" id="email" placeholder="Email" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password">Password</label>
+      <div class="input-group">
+        <input type="password" class="form-control" name="password1" id="password1" placeholder="Password" required>
+        <input type="password" class="form-control" name="password2" id="password2" placeholder="Password (again)" required>
+      </div>
+    </div>
+    
+    <div><button type="submit" class="btn btn-primary">Create account</button></div>
+
+    {{ form.csrf_token }}
+
+</form>
+</main>
+{% endblock %}

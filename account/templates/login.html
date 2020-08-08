@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Login - SITENAME{% endblock %}
+{% block login_active %}active{% endblock %}
+{% block content %}
+<main role="main" class="container">
+<form action="{{ url_for('account_blueprint.login') }}" method="post">
+
+
+    {% if message %}
+    <div class="alert alert-warning" role="alert">
+      <p>{{ message }}</p>
+    </div>
+    {% endif %}
+
+
+    <div class="mb-3">
+      <label for="email">Username or email</label>
+      <div class="input-group">
+        <input type="text" class="form-control" name="usernameOrEmail" id="usernameOrEmail" placeholder="Username or email" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password">Password</label>
+      <div class="input-group">
+        <input type="password" class="form-control" name="password" id="password1" placeholder="Password" required>
+      </div>
+    </div>
+    
+    <div><button type="submit" class="btn btn-primary">Login</button></div>
+
+    {{ form.csrf_token }}
+
+</form>
+
+<p style="margin-top: 10px;">
+  <a href="{{ url_for('account_blueprint.forgot') }}">Did you forget your password? Would you like to reset your password?</a>
+</p>
+
+</main>
+{% endblock %}
