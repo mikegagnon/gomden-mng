@@ -56,12 +56,6 @@ Launch pipeline-server in Virtual Box
     
 In one tab:
 
-    ssh localhost -p 2222    
-    psql gomdeneuser -h 127.0.0.1 -d gomdendb -a
-    postgres=# \connect gomdendb
-
-In one tab:
-
     . venv/bin/activate
     source export.sh
     source ~/gomden-export.sh
@@ -77,7 +71,7 @@ Another tab:
     source ~/gomden-export.sh
     celery -A gomden.celery worker -l info
 
-Another tab:
+TODO Another tab:
     
     npm run watch
 
