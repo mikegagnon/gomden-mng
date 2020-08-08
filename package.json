@@ -4,7 +4,7 @@
   "description": "Except where otherwise noted, everything in this repository is copyrighted by Michael N. Gagnon, 2020.",
   "main": "index.js",
   "scripts": {
-    "build": "babel --presets es2015 source/js/ -d core_zabuton/static/js/my/",
+    "build": "babel --presets es2015 source/js/ -d core_gomden/static/js/my/",
     "watch": "npm-watch"
   },
   "repository": {
