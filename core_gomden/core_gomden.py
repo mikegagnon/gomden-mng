@@ -23,3 +23,15 @@ core_gomden_blueprint = Blueprint('core_gomden_blueprint', __name__, template_fo
 class EmptyForm(FlaskForm):
     pass
 
+@core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])
+def getPage(pagename):
+    return jsonify({})
+
+@core_gomden_blueprint.route("/save-page/<pagename>", methods=['POST'])
+def savePage(pagename):
+    return jsonify({})
+
+@core_gomden_blueprint.route("/save-comment/<pagename>", methods=['POST'])
+def saveComment(pagename):
+    return jsonify({})
+

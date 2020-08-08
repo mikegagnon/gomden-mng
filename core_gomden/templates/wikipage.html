@@ -1,0 +1,29 @@
+
+{% extends "layout.html" %}
+{% block title %}Gomden{% endblock %}
+
+{% block wikipageincludes %}
+    <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/gomden.js')}}"></script>
+{% endblock %}
+
+{% block pastbody %}
+
+  <script type="text/javascript">
+    /* Gomden *****************************************************************/
+
+    CSRF_TOKEN = "{{ csrf_token() }}";
+
+    const config = {
+        pageName: "{{pagename}}",
+        getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename) }}",
+        savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
+        saveCommentUrl: "{{ url_for('core_gomden_blueprint.saveComment', pagename=pagename) }}",
+    }
+
+    const gomden = new Gomden(config);
+    gomden.launch();
+
+  </script>
+  <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/ajax-setup.js')}}"></script>
+
+{% endblock %}

@@ -11,9 +11,6 @@ class EmptyForm(FlaskForm):
 
 @landing_blueprint.route("/")
 def landing():
-    if "username" in session:
-        form = EmptyForm()
-        return render_template("new-landing.html", form=form)
-    else:
-        form = EmptyForm()
-        return render_template("login.html", form=form)
+    form = EmptyForm()
+    return render_template("wikipage.html", pagename="home", form=form)
+
