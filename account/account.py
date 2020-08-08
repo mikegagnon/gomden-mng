@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField
 from flask_bcrypt import Bcrypt
 from itsdangerous import URLSafeTimedSerializer
 
-from zabuton_log import *
+from gomden_log import *
 import config
 import db
 

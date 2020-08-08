@@ -14,14 +14,14 @@ import os
 
 import config
 
-from core_zabuton.core_zabuton import core_zabuton_blueprint, init as initCore
+from core_gomden.core_gomden import core_gomden_blueprint, init as initCore
 from landing.landing import landing_blueprint
 from account.account import account_blueprint, init as initAccount
 
 app = Flask(__name__, static_url_path="/static")
 sslify = SSLify(app)
 
-app.register_blueprint(core_zabuton_blueprint)
+app.register_blueprint(core_gomden_blueprint)
 app.register_blueprint(landing_blueprint)
 app.register_blueprint(account_blueprint)
 

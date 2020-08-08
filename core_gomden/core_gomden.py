@@ -11,14 +11,14 @@ import cgi
 
 import db
 import config
-from zabuton_log import *
+from gomden_log import *
 
 send_email = None
 def init(se):
     global send_email
     send_email = se
 
-core_zabuton_blueprint = Blueprint('core_zabuton_blueprint', __name__, template_folder='templates', static_folder='static', static_url_path='/core-static')
+core_gomden_blueprint = Blueprint('core_gomden_blueprint', __name__, template_folder='templates', static_folder='static', static_url_path='/core-static')
 
 class EmptyForm(FlaskForm):
     pass
