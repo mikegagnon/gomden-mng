@@ -163,12 +163,13 @@ def createUnconfirmedAccount(username, displayname, email, password_hash):
 
     c.execute("SELECT MAX(userid) FROM users")
     result = c.fetchone()
+    useridInt = result[0]
     c.close()
     conn.commit()
 
     # NOTE: userids are always of type of string, even though they just hold a number
     # This is convenient because SESSION["userid"] will always be a string
-    return str(result[0])
+    return str(useridInt)
 
 class UpdatePasswordByUsernameEmailError(Exception):
     pass

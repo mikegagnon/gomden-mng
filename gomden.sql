@@ -23,4 +23,9 @@ CREATE TABLE "usedtokens" (
     "ts" BIGINT DEFAULT CAST((extract(epoch from now()) * 1000) as BIGINT) /* num milliseconds since epoch */
 );
 
+# Upon setting up the site, the first user to create an acccount is granted the
+# ROOT and ADMIN roles
+INSERT INTO roles (userid, role) VALUES (1, 'ROOT');
+INSERT INTO roles (userid, role) VALUES (1, 'ADMIN');
+
 COMMIT;
