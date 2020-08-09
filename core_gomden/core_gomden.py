@@ -54,4 +54,5 @@ def saveComment(pagename):
 
 @core_gomden_blueprint.route("/edit/<pagename>", methods=['GET'])
 def editPage(pagename):
-    return "Edit page: " + pagename
+    form = EmptyForm()
+    return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)

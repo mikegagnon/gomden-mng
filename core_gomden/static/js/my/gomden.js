@@ -40,6 +40,28 @@ var Gomden = function () {
 
             $("#gomden-container").text(data.page.content);
         }
+    }, {
+        key: "launchEdit",
+        value: function launchEdit() {
+            this.loadEditPage();
+        }
+    }, {
+        key: "loadEditPage",
+        value: function loadEditPage() {
+            var url = this.config.getPageUrl;
+            var THIS = this;
+
+            $.get(url).success(function (data) {
+                THIS.loadEditPageSuccess(data);
+            }).fail(function () {
+                console.error("loadPage failed");
+            });
+        }
+    }, {
+        key: "loadEditPageSuccess",
+        value: function loadEditPageSuccess(data) {
+            $("#gomden-container").text("Edit: " + data.page.content);
+        }
     }]);
 
     return Gomden;

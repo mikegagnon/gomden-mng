@@ -32,4 +32,25 @@ class Gomden {
 
         $("#gomden-container").text(data.page.content);
     };
+
+    launchEdit() {
+        this.loadEditPage();
+    }
+
+    loadEditPage() {
+        const url = this.config.getPageUrl;
+        const THIS = this;
+
+        $.get(url)
+            .success(function(data) {
+                THIS.loadEditPageSuccess(data);
+            })
+            .fail(function() {
+                console.error("loadPage failed");
+            }); 
+    }
+
+    loadEditPageSuccess(data) {
+        $("#gomden-container").text("Edit: " + data.page.content);
+    }
 }
