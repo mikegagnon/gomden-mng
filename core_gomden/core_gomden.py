@@ -23,6 +23,11 @@ core_gomden_blueprint = Blueprint('core_gomden_blueprint', __name__, template_fo
 class EmptyForm(FlaskForm):
     pass
 
+@core_gomden_blueprint.route("/view/<pagename>")
+def viewPage(pagename):
+    form = EmptyForm()
+    return render_template("wikipage.html", pagename=pagename, wikipage=True, form=form)
+
 @core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])
 def getPage(pagename):
 
