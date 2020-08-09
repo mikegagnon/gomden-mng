@@ -25,7 +25,24 @@ class EmptyForm(FlaskForm):
 
 @core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])
 def getPage(pagename):
-    return jsonify({})
+
+    page = db.getPage(pagename)
+
+    if not page:
+        abort(404)
+
+    pagePermissions = db.getPagePermissions(pagename)
+
+    # TODO: logging
+    if not pagePermissions:
+        abort(500)
+
+    result = {
+        "page": page,
+        "permissions": pagePermissions
+    }
+
+    return jsonify(result)
 
 @core_gomden_blueprint.route("/save-page/<pagename>", methods=['POST'])
 def savePage(pagename):

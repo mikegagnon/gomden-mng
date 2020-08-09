@@ -345,3 +345,59 @@ def hasTokenBeenUsed(token):
         return True
     else:
         return False
+
+def toPageJson(record):
+    return {
+        "contributoruserid": record[0],
+        "pagename": record[1],
+        "revision": record[2],
+        "content": record[3],
+        "ts": record[4]
+    }
+
+# Get the most recent page
+@ErrorRollback
+def getPage(pagename):
+    conn = getConn()
+    c = conn.cursor()
+    c.execute("""
+        SELECT contributoruserid, pagename, revision, content, ts
+        FROM pages
+        WHERE pagename=%s
+        ORDER BY pageid DESC
+        LIMIT  1""", (pagename,))
+    result = c.fetchone()
+    c.close()
+    conn.commit()
+
+    if not result:
+        return None
+
+    return toPageJson(result)
+
+def toPagePermissionsJson(record):
+    return {
+        "pagename": record[0],
+        "owneruserid": record[1],
+        "allowcomments": record[2],
+        "allowedits": record[3],
+        "ts": record[4]
+    }
+
+# Get the permissions for a page
+@ErrorRollback
+def getPagePermissions(pagename):
+    conn = getConn()
+    c = conn.cursor()
+    c.execute("""
+        SELECT pagename, owneruserid, allowcomments, allowedits, ts
+        FROM pagepermissions
+        WHERE pagename=%s""", (pagename,))
+    result = c.fetchone()
+    c.close()
+    conn.commit()
+
+    if not result:
+        return None
+
+    return toPagePermissionsJson(result)

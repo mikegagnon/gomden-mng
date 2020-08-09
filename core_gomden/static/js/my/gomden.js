@@ -18,7 +18,20 @@ var Gomden = function () {
 
     _createClass(Gomden, [{
         key: "launch",
-        value: function launch() {}
+        value: function launch() {
+            this.loadPage();
+        }
+    }, {
+        key: "loadPage",
+        value: function loadPage() {
+            var url = this.config.getPageUrl;
+
+            $.get(url).success(function (data) {
+                console.log(data);
+            }).fail(function () {
+                console.error("loadPage failed");
+            });
+        }
     }]);
 
     return Gomden;

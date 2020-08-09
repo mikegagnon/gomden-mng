@@ -11,6 +11,18 @@ class Gomden {
     }
 
     launch() {
-        
+        this.loadPage();
+    }
+
+    loadPage() {
+        const url = this.config.getPageUrl;
+
+         $.get(url)
+            .success(function(data) {
+                console.log(data);
+            })
+            .fail(function() {
+                console.error("loadPage failed");
+            });
     }
 }
