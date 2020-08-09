@@ -60,7 +60,8 @@ var Gomden = function () {
     }, {
         key: "loadEditPageSuccess",
         value: function loadEditPageSuccess(data) {
-            $("#gomden-container").text("Edit: " + data.page.content);
+            $("#gomden-container").html("\n            <textarea id=\"gomden-editor\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <button class=\"btn btn-primary\" type=\"submit\">Save</button>\n            ");
+            $("#gomden-editor").val(data.page.content);
         }
     }]);
 

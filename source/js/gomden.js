@@ -51,6 +51,10 @@ class Gomden {
     }
 
     loadEditPageSuccess(data) {
-        $("#gomden-container").text("Edit: " + data.page.content);
+        $("#gomden-container").html(`
+            <textarea id="gomden-editor" rows="15" style="width: 100%"></textarea>
+            <button class="btn btn-primary" type="submit">Save</button>
+            `);
+        $("#gomden-editor").val(data.page.content);
     }
 }
