@@ -148,6 +148,16 @@ var Gomden = function () {
 
             $("#allowEdits").prop("checked", this.config.allowEdits);
         }
+    }, {
+        key: "launchHistory",
+        value: function launchHistory() {
+            $("#gomden-container").append("\n            <span class='gomden-title-page-name'>History for page:" + this.config.pageName + "</span><br><br>\n        ");
+
+            this.config.history.forEach(function (h) {
+                var record = "\n                <p><a href=\"\">Version " + h.revision + "</a>, by @" + h.username + "</p>\n            ";
+                $("#gomden-container").append(record);
+            });
+        }
     }]);
 
     return Gomden;

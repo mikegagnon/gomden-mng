@@ -1,7 +1,7 @@
 
 {% extends "layout.html" %}
 {% block title %}Gomden{% endblock %}
-{% block view_wikipage_active %}active{% endblock %}
+{% block history_wikipage_active %}active{% endblock %}
 
 {% block wikipageincludes %}
     <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/gomden.js')}}"></script>
@@ -32,7 +32,7 @@
     };
 
     var gomden = new Gomden(config);
-    gomden.launch();
+    gomden.launchHistory();
 
   </script>
   <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/ajax-setup.js')}}"></script>

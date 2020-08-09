@@ -170,4 +170,18 @@ Click the edit button (above) to create this page.
 
         $("#allowEdits").prop("checked", this.config.allowEdits);
     }
+
+    launchHistory() {
+        $("#gomden-container").append(`
+            <span class='gomden-title-page-name'>History for page:${this.config.pageName}</span><br><br>
+        `);
+
+        this.config.history.forEach(function(h){
+            const record = `
+                <p><a href="">Version ${h.revision}</a>, by @${h.username}</p>
+            `;
+            $("#gomden-container").append(record);
+
+        });
+    }
 }

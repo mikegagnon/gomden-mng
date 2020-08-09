@@ -527,7 +527,6 @@ def historyRecordToJson(h):
         "ts": h[3]
     }
 
-
 @ErrorRollback
 def getHistory(pagename):
 
@@ -549,5 +548,5 @@ def getHistory(pagename):
 
     history = [historyRecordToJson(h) for h in result]
 
-    print(json.dumps(history, indent=4, sort_keys=True))
+    #print(json.dumps(history, indent=4, sort_keys=True))
     return history
