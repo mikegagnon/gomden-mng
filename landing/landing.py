@@ -12,5 +12,5 @@ class EmptyForm(FlaskForm):
 @landing_blueprint.route("/")
 def landing():
     form = EmptyForm()
-    return render_template("wikipage.html", pagename="home", form=form)
+    return render_template("wikipage.html", pagename="home", wikipage=True, form=form)
 

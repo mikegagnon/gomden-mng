@@ -52,3 +52,6 @@ def savePage(pagename):
 def saveComment(pagename):
     return jsonify({})
 
+@core_gomden_blueprint.route("/edit/<pagename>", methods=['GET'])
+def editPage(pagename):
+    return "Edit page: " + pagename
