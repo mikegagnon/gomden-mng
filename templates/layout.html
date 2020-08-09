@@ -30,7 +30,7 @@
               <a class="nav-link" href="{{url_for('account_blueprint.create_account')}}">Create account</a>
             </li>
             <li class="nav-item {% block login_active %}{% endblock %}">
-              <a class="nav-link" href="{{url_for('landing_blueprint.landing')}}">Login</a>
+              <a class="nav-link" href="{{url_for('account_blueprint.login')}}">Login</a>
             </li>
 
           {% else %}

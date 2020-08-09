@@ -76,7 +76,7 @@ def getConfirmedUserByUserid(userid):
     user = toUserJson(result)
 
     c.execute("""
-        SELECT role FROM roles WHERE userid=%s""", (userid,))
+        SELECT role FROM roles WHERE userid=%s""", (user["userid"],))
     user["roles"] = [r[0] for r in c.fetchall()]
 
     c.close()
@@ -114,7 +114,7 @@ def getConfirmedUserByUsername(username):
     user = toUserJson(result)
 
     c.execute("""
-        SELECT role FROM roles WHERE userid=%s""", (userid,))
+        SELECT role FROM roles WHERE userid=%s""", (user["userid"],))
     user["roles"] = [r[0] for r in c.fetchall()]
 
     c.close()
@@ -140,7 +140,7 @@ def getConfirmedUserByUsernameEmail(username, email):
     user = toUserJson(result)
 
     c.execute("""
-        SELECT role FROM roles WHERE userid=%s""", (userid,))
+        SELECT role FROM roles WHERE userid=%s""", (user["userid"],))
     user["roles"] = [r[0] for r in c.fetchall()]
 
     c.close()
@@ -302,7 +302,7 @@ def getConfirmedUserByEmail(email):
     user = toUserJson(result)
 
     c.execute("""
-        SELECT role FROM roles WHERE userid=%s""", (userid,))
+        SELECT role FROM roles WHERE userid=%s""", (user["userid"],))
     user["roles"] = [r[0] for r in c.fetchall()]
 
     c.close()
