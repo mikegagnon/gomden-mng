@@ -449,7 +449,8 @@ def getExistingPagenames(pagenames):
     # Limit to 500 to avoid slamming database
     trimmedPagenames = pagenames[:500]
 
-    c.execute("""SELECT pagename FROM pages WHERE pagename IN %s""", (tuple(trimmedPagenames),))
+    # I don't know how performant this is
+    c.execute("""SELECT pagename FROM pages WHERE pagename IN %s AND revision=1""", (tuple(trimmedPagenames),))
 
     results = c.fetchall()
     c.close()
@@ -458,9 +459,6 @@ def getExistingPagenames(pagenames):
     if not results:
         return []
 
-    print(results)
+    results = [r[0] for r in results]
 
     return results
-
-
-
