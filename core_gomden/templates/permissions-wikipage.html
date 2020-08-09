@@ -1,7 +1,8 @@
 
 {% extends "layout.html" %}
 {% block title %}Gomden{% endblock %}
-{% block view_wikipage_active %}active{% endblock %}
+{% block permissions_wikipage_active %}active{% endblock %}
+
 
 {% block wikipageincludes %}
     <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/gomden.js')}}"></script>
@@ -12,7 +13,9 @@
 <div id="gomden-container" class="container">
 </div>
 
+
 {% endblock %}
+
 
 {% block pastbody %}
 
@@ -22,6 +25,10 @@
     CSRF_TOKEN = "{{ csrf_token() }}";
 
     var config = {
+        username: "{{username}}",
+        userid: {{userid}},
+        ownerUsername: "{{ownerUsername}}",
+        ownerUserid: {{ownerUserid}},
         pageName: "{{pagename}}",
         viewPageUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='') }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
@@ -31,7 +38,7 @@
     }
 
     var gomden = new Gomden(config);
-    gomden.launch();
+    gomden.launchPermissions();
 
   </script>
   <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/ajax-setup.js')}}"></script>

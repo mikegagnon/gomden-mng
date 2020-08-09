@@ -122,6 +122,21 @@ var Gomden = function () {
             var content = "# This page does not exist\nClick the edit button (above) to create this page.\n";
             $("#gomden-editor").val(content);
         }
+    }, {
+        key: "launchPermissions",
+        value: function launchPermissions() {
+            var inside = void 0;
+
+            if (this.config.userid === 0) {
+                inside = "You are not logged in. You may not change the permissions for this page.";
+            } else if (this.config.userid === this.config.ownerUserid) {
+                inside = "\n            <div>\n              <input type=\"checkbox\" id=\"allowEdits\" name=\"allowEdits\">\n              <label for=\"allowEdits\">Allow edits</label>\n            </div>\n            <button class=\"btn btn-primary\" type=\"submit\">Save permissions</button>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>";
+            } else {
+                inside = "You are logged in as @" + this.config.username + ". You may not change the permissions for this page.";
+            }
+
+            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <p><a class=\"gomden-page-link\" href=\"" + this.config.viewPageUrl + this.config.pageName + "\">page:" + this.config.pageName + "</a> is owned by @" + this.config.ownerUsername + ".</p>\n            " + inside + "\n            </form>\n        ");
+        }
     }]);
 
     return Gomden;

@@ -405,6 +405,40 @@ def getPagePermissions(pagename):
     return toPagePermissionsJson(result)
 
 @ErrorRollback
+def getOwner(pagename):
+    conn = getConn()
+    c = conn.cursor()
+    c.execute("""
+        SELECT owneruserid
+        FROM pagepermissions
+        WHERE pagename=%s""", (pagename,))
+    result = c.fetchone()
+
+    if not result:
+        c.close()
+        conn.commit()
+        return None
+
+    userid = result[0]
+
+    c.execute("""
+        SELECT username
+        FROM users WHERE userid=%s AND setup_state='EMAIL_CONFIRMED'""", (userid,))
+    result = c.fetchone()
+
+    if not result:
+        c.close()
+        conn.commit()
+        return None
+
+    username = result[0]
+    
+    return {
+        "userid": userid,
+        "username": username
+    }   
+
+@ErrorRollback
 def savePage(contributoruserid, pagename, content):
     conn = getConn()
     c = conn.cursor()
@@ -462,3 +496,4 @@ def getExistingPagenames(pagenames):
     results = [r[0] for r in results]
 
     return results
+

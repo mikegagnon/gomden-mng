@@ -24,7 +24,7 @@
 
     CSRF_TOKEN = "{{ csrf_token() }}";
 
-    const config = {
+    var config = {
         pageName: "{{pagename}}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
         getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename) }}",
@@ -32,7 +32,7 @@
         saveCommentUrl: "{{ url_for('core_gomden_blueprint.saveComment', pagename=pagename) }}",
     }
 
-    const gomden = new Gomden(config);
+    var gomden = new Gomden(config);
     gomden.launchEdit();
 
   </script>

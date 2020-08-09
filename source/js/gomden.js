@@ -121,4 +121,29 @@ Click the edit button (above) to create this page.
 `;
         $("#gomden-editor").val(content);
     }
+
+    launchPermissions() {
+        let inside;
+
+        if (this.config.userid === 0) {
+            inside = `You are not logged in. You may not change the permissions for this page.`;
+        } else if (this.config.userid === this.config.ownerUserid) {
+            inside = `
+            <div>
+              <input type="checkbox" id="allowEdits" name="allowEdits">
+              <label for="allowEdits">Allow edits</label>
+            </div>
+            <button class="btn btn-primary" type="submit">Save permissions</button>
+            <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>`;
+        } else {
+            inside = `You are logged in as @${this.config.username}. You may not change the permissions for this page.`;
+        }
+
+        $("#gomden-container").html(`
+            <form action="${this.config.savePageUrl}" method="post">
+            <p><a class="gomden-page-link" href="${this.config.viewPageUrl}${this.config.pageName}">page:${this.config.pageName}</a> is owned by @${this.config.ownerUsername}.</p>
+            ${inside}
+            </form>
+        `);
+    }
 }

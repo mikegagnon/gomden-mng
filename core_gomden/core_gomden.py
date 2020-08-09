@@ -76,7 +76,7 @@ def saveComment(pagename):
 def editPage(pagename):
     if not config.sanePagename(pagename):
         abort(404)
-        
+
     form = EmptyForm()
     return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
 
@@ -85,6 +85,12 @@ def getUserOrAnonymousId():
         return session["userid"]
     else:
         return "0" # zero indicates anonymous user
+
+def getUserOrAnonymousName():
+    if "username" in session:
+        return session["username"]
+    else:
+        return "Anonymous"
 
 @core_gomden_blueprint.route("/save/<pagename>", methods=['POST'])
 def savePage(pagename):
@@ -102,3 +108,19 @@ def savePage(pagename):
 
 
     #return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
+
+@core_gomden_blueprint.route("/permissions/<pagename>", methods=['GET'])
+def permissionsPage(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
+
+    owner = db.getOwner(pagename)
+
+    if owner == None:
+        abort(404)
+
+    userid = getUserOrAnonymousId()
+    username = getUserOrAnonymousName()
+        
+    form = EmptyForm()
+    return render_template("permissions-wikipage.html", userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
