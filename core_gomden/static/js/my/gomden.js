@@ -56,7 +56,7 @@ var Gomden = function () {
     }, {
         key: "applyLinks",
         value: function applyLinks(withHeaders) {
-            return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, "<a href='$1'>page:$1</a>");
+            return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, "<a href='" + this.config.viewPageUrl + "$1'>page:$1</a>");
         }
     }, {
         key: "wikipageToHtml",
