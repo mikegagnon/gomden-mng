@@ -30,7 +30,7 @@ class Gomden {
     loadPageSuccess(data) {
         console.log(data);
         const html = this.wikipageToHtml(data.page.content);
-        const withTitle = `<span class='gomden-title-page-name'>Viewing link:${data.page.pagename}</span><br>` + html;
+        const withTitle = `<span class='gomden-title-page-name'>Viewing page:${data.page.pagename}</span><br><br>` + html;
         $("#gomden-container").html(withTitle);
     };
 
@@ -48,7 +48,7 @@ class Gomden {
     }
 
     applyLinks(withHeaders) {
-        return withHeaders.replace(/link:([0-9a-z-]{3,100})/mg, "<a href='$1'>link:$1</a>")
+        return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, "<a href='$1'>page:$1</a>")
     }
 
     wikipageToHtml(content) {

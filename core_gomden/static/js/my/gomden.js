@@ -38,7 +38,7 @@ var Gomden = function () {
         value: function loadPageSuccess(data) {
             console.log(data);
             var html = this.wikipageToHtml(data.page.content);
-            var withTitle = "<span class='gomden-title-page-name'>Viewing link:" + data.page.pagename + "</span><br>" + html;
+            var withTitle = "<span class='gomden-title-page-name'>Viewing page:" + data.page.pagename + "</span><br><br>" + html;
             $("#gomden-container").html(withTitle);
         }
     }, {
@@ -56,7 +56,7 @@ var Gomden = function () {
     }, {
         key: "applyLinks",
         value: function applyLinks(withHeaders) {
-            return withHeaders.replace(/link:([0-9a-z-]{3,100})/mg, "<a href='$1'>link:$1</a>");
+            return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, "<a href='$1'>page:$1</a>");
         }
     }, {
         key: "wikipageToHtml",
