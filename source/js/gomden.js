@@ -22,9 +22,18 @@ class Gomden {
             .success(function(data) {
                 THIS.loadPageSuccess(data);
             })
-            .fail(function() {
-                console.error("loadPage failed");
+            .fail(function(data) {
+                THIS.loadPageFailure(data);
             });
+    }
+
+    loadPageFailure(data) {
+        const html = `
+            <span class='gomden-title-page-name'>Missing page:${this.config.pageName}</span><br><br>
+            <h1># This page does not exist</h1><br>
+            Click the edit button (above) to create this page.
+            `;
+        $("#gomden-container").html(html);
     }
 
     loadPageSuccess(data) {
@@ -68,9 +77,9 @@ class Gomden {
             .success(function(data) {
                 THIS.loadEditPageSuccess(data);
             })
-            .fail(function() {
-                console.error("loadPage failed");
-            }); 
+            .fail(function(data) {
+                THIS.loadEditPageFailure(data);
+            });
     }
 
     // Yes, this is janky
@@ -83,5 +92,20 @@ class Gomden {
             </form>
         `);
         $("#gomden-editor").val(data.page.content);
+    }
+
+    // Yes, this is janky
+    loadEditPageFailure(data) {
+        $("#gomden-container").html(`
+            <form action="${this.config.savePageUrl}" method="post">
+            <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
+            <button class="btn btn-primary" type="submit">Save</button>
+            <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
+            </form>
+        `);
+        const content = `# This page does not exist
+Click the edit button (above) to create this page.
+`;
+        $("#gomden-editor").val(content);
     }
 }

@@ -418,11 +418,16 @@ def savePage(contributoruserid, pagename, content):
     result = c.fetchone()
 
     if not result:
-        c.close()
-        conn.commit()
-        return False
+        revision = 1
 
-    revision = result[0] + 1
+        c.execute("""
+            INSERT INTO pagepermissions (pagename, owneruserid, allowcomments, allowedits)
+            VALUES (%s, %s, 1, 1)
+            """, (pagename, contributoruserid))
+
+    else:
+        revision = result[0] + 1
+
     c.execute("""
         INSERT INTO pages
         (contributoruserid, pagename, revision, content)
@@ -435,6 +440,9 @@ def savePage(contributoruserid, pagename, content):
 # slower writes / faster reads?
 @ErrorRollback
 def getExistingPagenames(pagenames):
+    if len(pagenames) == 0:
+        return []
+
     conn = getConn()
     c = conn.cursor()
 

@@ -29,9 +29,15 @@ var Gomden = function () {
 
             $.get(url).success(function (data) {
                 THIS.loadPageSuccess(data);
-            }).fail(function () {
-                console.error("loadPage failed");
+            }).fail(function (data) {
+                THIS.loadPageFailure(data);
             });
+        }
+    }, {
+        key: "loadPageFailure",
+        value: function loadPageFailure(data) {
+            var html = "\n            <span class='gomden-title-page-name'>Missing page:" + this.config.pageName + "</span><br><br>\n            <h1># This page does not exist</h1><br>\n            Click the edit button (above) to create this page.\n            ";
+            $("#gomden-container").html(html);
         }
     }, {
         key: "loadPageSuccess",
@@ -77,8 +83,8 @@ var Gomden = function () {
 
             $.get(url).success(function (data) {
                 THIS.loadEditPageSuccess(data);
-            }).fail(function () {
-                console.error("loadPage failed");
+            }).fail(function (data) {
+                THIS.loadEditPageFailure(data);
             });
         }
 
@@ -89,6 +95,16 @@ var Gomden = function () {
         value: function loadEditPageSuccess(data) {
             $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <button class=\"btn btn-primary\" type=\"submit\">Save</button>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
             $("#gomden-editor").val(data.page.content);
+        }
+
+        // Yes, this is janky
+
+    }, {
+        key: "loadEditPageFailure",
+        value: function loadEditPageFailure(data) {
+            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <button class=\"btn btn-primary\" type=\"submit\">Save</button>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
+            var content = "# This page does not exist\nClick the edit button (above) to create this page.\n";
+            $("#gomden-editor").val(content);
         }
     }]);
 
