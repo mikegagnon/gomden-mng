@@ -49,9 +49,6 @@ def getPage(pagename):
 
     return jsonify(result)
 
-@core_gomden_blueprint.route("/save-page/<pagename>", methods=['POST'])
-def savePage(pagename):
-    return jsonify({})
 
 @core_gomden_blueprint.route("/save-comment/<pagename>", methods=['POST'])
 def saveComment(pagename):
@@ -59,5 +56,10 @@ def saveComment(pagename):
 
 @core_gomden_blueprint.route("/edit/<pagename>", methods=['GET'])
 def editPage(pagename):
+    form = EmptyForm()
+    return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
+
+@core_gomden_blueprint.route("/save/<pagename>", methods=['POST'])
+def savePage(pagename):
     form = EmptyForm()
     return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)

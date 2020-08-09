@@ -52,9 +52,12 @@ class Gomden {
 
     loadEditPageSuccess(data) {
         $("#gomden-container").html(`
-            <textarea id="gomden-editor" rows="15" style="width: 100%"></textarea>
+            <form action="${this.config.savePageUrl}" method="post">
+            <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
             <button class="btn btn-primary" type="submit">Save</button>
-            `);
+            <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
+            </form>
+        `);
         $("#gomden-editor").val(data.page.content);
     }
 }
