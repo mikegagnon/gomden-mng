@@ -152,12 +152,11 @@ Click the edit button (above) to create this page.
         }
 
         $("#gomden-container").html(`
-            <form action="${this.config.savePageUrl}" method="post">
+            <form action="${this.config.savePermissionsUrl}" method="post">
             <p><a class="gomden-page-link" href="${this.config.viewPageUrl}${this.config.pageName}">page:${this.config.pageName}</a> is owned by @${this.config.ownerUsername}.</p>
             ${inside}
             </form>
         `);
-
 
         $("#allowEdits").prop("checked", this.config.allowEdits);
     }

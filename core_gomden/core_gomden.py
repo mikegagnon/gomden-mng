@@ -106,7 +106,37 @@ def savePage(pagename):
     db.savePage(contributoruserid, pagename, newContent)
     return redirect(url_for('core_gomden_blueprint.viewPage', pagename=pagename))
 
+@core_gomden_blueprint.route("/save-permissions/<pagename>", methods=['POST'])
+def savePermissions(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
 
+    userid = getUserOrAnonymousId()
+
+    # If anonymous
+    if userid == 0:
+        abort(403)
+
+    owner = db.getOwner(pagename)
+    if owner == None:
+        abort(404)
+
+    if owner["userid"] != userid:
+        abort(403)
+
+    form = EmptyForm()
+    # TODO: make robust
+    allowEdits = request.form.get('allowEdits')
+
+    if allowEdits == "on":
+        allowEdits = True
+    else:
+        allowEdits = False
+
+    db.savePermissions(pagename, allowEdits)
+    return redirect(url_for('core_gomden_blueprint.viewPage', pagename=pagename))
+
+savePermissions
     #return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
 
 @core_gomden_blueprint.route("/permissions/<pagename>", methods=['GET'])
@@ -125,7 +155,6 @@ def permissionsPage(pagename):
     permissions = db.getPagePermissions(pagename)
     if permissions == None:
         abort(500)
-
 
     allowEdits = permissions["allowedits"]
     if allowEdits == 1:

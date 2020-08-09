@@ -439,6 +439,25 @@ def getOwner(pagename):
     }   
 
 @ErrorRollback
+def savePermissions(pagename, allowEdits):
+    conn = getConn()
+    c = conn.cursor()
+
+    if allowEdits:
+        allowEditsDigit = 1
+    else:
+        allowEditsDigit = 0
+
+    c.execute("""
+        UPDATE pagepermissions
+        SET allowedits=%s
+        WHERE pagename=%s
+        """, (allowEditsDigit, pagename))
+
+    c.close()
+    conn.commit()
+
+@ErrorRollback
 def savePage(contributoruserid, pagename, content):
     conn = getConn()
     c = conn.cursor()

@@ -135,7 +135,7 @@ var Gomden = function () {
                 inside = "\n                <p>You are logged in as @" + this.config.username + ". You may not change the permissions for this page.</p>\n                <div>\n                  <input type=\"checkbox\" id=\"allowEdits\" name=\"allowEdits\" disabled>\n                  <label for=\"allowEdits\" class=\"gomden-disabled-text\">Allow edits</label>\n                </div>\n                ";
             }
 
-            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <p><a class=\"gomden-page-link\" href=\"" + this.config.viewPageUrl + this.config.pageName + "\">page:" + this.config.pageName + "</a> is owned by @" + this.config.ownerUsername + ".</p>\n            " + inside + "\n            </form>\n        ");
+            $("#gomden-container").html("\n            <form action=\"" + this.config.savePermissionsUrl + "\" method=\"post\">\n            <p><a class=\"gomden-page-link\" href=\"" + this.config.viewPageUrl + this.config.pageName + "\">page:" + this.config.pageName + "</a> is owned by @" + this.config.ownerUsername + ".</p>\n            " + inside + "\n            </form>\n        ");
 
             $("#allowEdits").prop("checked", this.config.allowEdits);
         }
