@@ -9,3 +9,7 @@
 .gomden-missing-page-link {
     color: red;
 }
+
+.gomden-disabled-text {
+    color: #aaa;
+}

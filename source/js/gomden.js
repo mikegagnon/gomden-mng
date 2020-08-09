@@ -126,7 +126,13 @@ Click the edit button (above) to create this page.
         let inside;
 
         if (this.config.userid === 0) {
-            inside = `You are not logged in. You may not change the permissions for this page.`;
+            inside = `
+                <p>You are not logged in. You may not change the permissions for this page.</p>
+                <div>
+                  <input type="checkbox" id="allowEdits" name="allowEdits" disabled>
+                  <label for="allowEdits" class="gomden-disabled-text">Allow edits</label>
+                </div>
+                `;
         } else if (this.config.userid === this.config.ownerUserid) {
             inside = `
             <div>
@@ -136,7 +142,13 @@ Click the edit button (above) to create this page.
             <button class="btn btn-primary" type="submit">Save permissions</button>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>`;
         } else {
-            inside = `You are logged in as @${this.config.username}. You may not change the permissions for this page.`;
+            inside = `
+                <p>You are logged in as @${this.config.username}. You may not change the permissions for this page.</p>
+                <div>
+                  <input type="checkbox" id="allowEdits" name="allowEdits" disabled>
+                  <label for="allowEdits" class="gomden-disabled-text">Allow edits</label>
+                </div>
+                `;
         }
 
         $("#gomden-container").html(`
