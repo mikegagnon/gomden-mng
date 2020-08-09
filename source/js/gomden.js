@@ -29,9 +29,17 @@ class Gomden {
 
     loadPageSuccess(data) {
         console.log(data);
-
-        $("#gomden-container").text(data.page.content);
+        const html = this.wikipageToHtml(data.page.content);
+        $("#gomden-container").html(html);
     };
+
+    escapeHtml(text) {
+        return $("<div>").text(text).html();
+    }
+
+    wikipageToHtml(content) {
+        return this.escapeHtml(content).replace(/\n/g, "<br />");
+    }
 
     launchEdit() {
         this.loadEditPage();

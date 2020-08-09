@@ -37,8 +37,18 @@ var Gomden = function () {
         key: "loadPageSuccess",
         value: function loadPageSuccess(data) {
             console.log(data);
-
-            $("#gomden-container").text(data.page.content);
+            var html = this.wikipageToHtml(data.page.content);
+            $("#gomden-container").html(html);
+        }
+    }, {
+        key: "escapeHtml",
+        value: function escapeHtml(text) {
+            return $("<div>").text(text).html();
+        }
+    }, {
+        key: "wikipageToHtml",
+        value: function wikipageToHtml(content) {
+            return this.escapeHtml(content).replace(/\n/g, "<br />");
         }
     }, {
         key: "launchEdit",
