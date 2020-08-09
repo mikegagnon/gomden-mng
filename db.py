@@ -516,3 +516,38 @@ def getExistingPagenames(pagenames):
 
     return results
 
+def historyRecordToJson(h):
+    username = h[0]
+    if username == None:
+        username = "Anonymous"
+    return {
+        "username": username,
+        "userid": h[1],
+        "revision": h[2],
+        "ts": h[3]
+    }
+
+
+@ErrorRollback
+def getHistory(pagename):
+
+    conn = getConn()
+    c = conn.cursor()
+    c.execute("""
+        SELECT u.username, p.contributoruserid, p.revision, p.ts
+        FROM pages p
+        LEFT JOIN users u
+        ON u.userid=p.contributoruserid
+        WHERE p.pagename=%s
+        ORDER BY p.pageid DESC""", (pagename,))
+    result = c.fetchall()
+    c.close()
+    conn.commit()
+
+    if not result:
+        return []
+
+    history = [historyRecordToJson(h) for h in result]
+
+    print(json.dumps(history, indent=4, sort_keys=True))
+    return history

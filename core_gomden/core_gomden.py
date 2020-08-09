@@ -197,3 +197,13 @@ def permissionsPage(pagename):
         
     form = EmptyForm()
     return render_template("permissions-wikipage.html", allowEdits=allowEdits, userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
+
+@core_gomden_blueprint.route("/history/<pagename>", methods=['GET'])
+def historyPage(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
+
+    history = json.dumps(db.getHistory(pagename))
+
+    form = EmptyForm()
+    return render_template("history-wikipage.html", pagename=pagename, wikipage=True, form=form, history=history)

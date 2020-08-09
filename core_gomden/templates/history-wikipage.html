@@ -1,0 +1,40 @@
+
+{% extends "layout.html" %}
+{% block title %}Gomden{% endblock %}
+{% block view_wikipage_active %}active{% endblock %}
+
+{% block wikipageincludes %}
+    <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/gomden.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="gomden-container" class="container">
+</div>
+
+{% endblock %}
+
+{% block pastbody %}
+
+  <script type="text/javascript">
+    /* Gomden *****************************************************************/
+
+    CSRF_TOKEN = "{{ csrf_token() }}";
+
+    var config = {
+        pageName: "{{pagename}}",
+        history: {{history | safe}},
+        viewPageUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='') }}",
+        savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
+        getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename) }}",
+        savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
+        saveCommentUrl: "{{ url_for('core_gomden_blueprint.saveComment', pagename=pagename) }}",
+    };
+
+    var gomden = new Gomden(config);
+    gomden.launch();
+
+  </script>
+  <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/ajax-setup.js')}}"></script>
+
+{% endblock %}

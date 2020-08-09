@@ -66,6 +66,10 @@
                 <a class="nav-link" href="{{ url_for('core_gomden_blueprint.permissionsPage', pagename=pagename) }}">Permissions</a>
             </li>
 
+            <li class="nav-item {% block history_wikipage_active %}{% endblock %}">
+                <a class="nav-link" href="{{ url_for('core_gomden_blueprint.historyPage', pagename=pagename) }}">History</a>
+            </li>
+
           {% endif %}
 
 
