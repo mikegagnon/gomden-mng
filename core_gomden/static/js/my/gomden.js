@@ -46,6 +46,12 @@ var Gomden = function () {
             var html = this.wikipageToHtml(data.page.content);
             var withTitle = "<span class='gomden-title-page-name'>Viewing page:" + data.page.pagename + "</span><br><br>" + html;
             $("#gomden-container").html(withTitle);
+            $("#gomden-container .gomden-page-link").each(function (i, value) {
+                var pagename = $(value).text().slice(5);
+                if (!data.existingPagenames.includes(pagename)) {
+                    $(value).addClass("gomden-missing-page-link");
+                }
+            });
         }
     }, {
         key: "escapeHtml",
@@ -60,7 +66,7 @@ var Gomden = function () {
     }, {
         key: "applyLinks",
         value: function applyLinks(withHeaders) {
-            return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, "<a href='" + this.config.viewPageUrl + "$1'>page:$1</a>");
+            return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, "<a class=\"gomden-page-link\" href='" + this.config.viewPageUrl + "$1'>page:$1</a>");
         }
     }, {
         key: "wikipageToHtml",

@@ -5,3 +5,7 @@
 .gomden-title-page-name {
     color: #aaa;
 }
+
+.gomden-missing-page-link {
+    color: red;
+}
