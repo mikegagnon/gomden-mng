@@ -25,12 +25,14 @@
     CSRF_TOKEN = "{{ csrf_token() }}";
 
     var config = {
+        allowEdit: {{allowEdit}},
+        ownerUsername: "{{ownerUsername}}",
         pageName: "{{pagename}}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
         getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename) }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
         saveCommentUrl: "{{ url_for('core_gomden_blueprint.saveComment', pagename=pagename) }}",
-    }
+    };
 
     var gomden = new Gomden(config);
     gomden.launchEdit();

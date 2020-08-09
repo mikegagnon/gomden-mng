@@ -79,7 +79,17 @@ class Gomden {
     }
 
     launchEdit() {
-        this.loadEditPage();
+        if (this.config.allowEdit) {
+            this.loadEditPage();
+        } else {
+            this.loadNoEditPage();
+        }
+    }
+
+    loadNoEditPage() {
+         $("#gomden-container").html(`
+            <p><a class="gomden-page-link" href="${this.config.viewPageUrl}${this.config.pageName}">page:${this.config.pageName}</a> is owned by @${this.config.ownerUsername}, and has disabled other users from editing this page.</p>
+        `);
     }
 
     loadEditPage() {
