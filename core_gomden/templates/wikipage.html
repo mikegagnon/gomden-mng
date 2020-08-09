@@ -23,9 +23,10 @@
 
     var config = {
         pageName: "{{pagename}}",
-        viewPageUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='') }}",
+        revision: {{revision}},
+        viewPageUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='', revision=None) }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
-        getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename) }}",
+        getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename, revision=None) }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
         saveCommentUrl: "{{ url_for('core_gomden_blueprint.saveComment', pagename=pagename) }}",
     }

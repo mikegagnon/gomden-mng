@@ -359,23 +359,40 @@ def toPageJson(record):
 
 # Get the most recent page
 @ErrorRollback
-def getPage(pagename):
+def getPage(pagename, revision=None):
     conn = getConn()
     c = conn.cursor()
-    c.execute("""
-        SELECT contributoruserid, pagename, revision, content, ts
-        FROM pages
-        WHERE pagename=%s
-        ORDER BY pageid DESC
-        LIMIT  1""", (pagename,))
-    result = c.fetchone()
-    c.close()
-    conn.commit()
+    if revision == None:
+        c.execute("""
+            SELECT contributoruserid, pagename, revision, content, ts
+            FROM pages
+            WHERE pagename=%s
+            ORDER BY pageid DESC
+            LIMIT  1""", (pagename,))
+        result = c.fetchone()
+        c.close()
+        conn.commit()
 
-    if not result:
-        return None
+        if not result:
+            return None
 
-    return toPageJson(result)
+        return toPageJson(result)
+
+    else:
+        c.execute("""
+            SELECT contributoruserid, pagename, revision, content, ts
+            FROM pages
+            WHERE pagename=%s AND revision=%s
+            ORDER BY pageid DESC
+            LIMIT  1""", (pagename, revision))
+        result = c.fetchone()
+        c.close()
+        conn.commit()
+
+        if not result:
+            return False 
+
+        return toPageJson(result)
 
 def toPagePermissionsJson(record):
     return {

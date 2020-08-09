@@ -15,7 +15,12 @@ class Gomden {
     }
 
     loadPage() {
-        const url = this.config.getPageUrl;
+        const revision = this.config.revision;
+        let url = this.config.getPageUrl;
+        if (revision > 0) {
+            url += "/" + revision;
+        }
+
         const THIS = this;
 
         $.get(url)
@@ -28,11 +33,18 @@ class Gomden {
     }
 
     loadPageFailure(data) {
-        const html = `
-            <span class='gomden-title-page-name'>Missing page:${this.config.pageName}</span><br><br>
-            <h1># This page does not exist</h1><br>
-            Click the edit button (above) to create this page.
-            `;
+        let html;
+
+        if (this.config.revision === 0) {
+            html = `
+                <span class='gomden-title-page-name'>Missing page:${this.config.pageName}</span><br><br>
+                <h1># This page does not exist</h1><br>
+                Click the edit button (above) to create this page.
+                `;
+            }
+        else {
+            html = "Either the page does not exist, or the revision number for the page does not exist";
+        }
         $("#gomden-container").html(html);
     }
 
@@ -176,9 +188,11 @@ Click the edit button (above) to create this page.
             <span class='gomden-title-page-name'>History for page:${this.config.pageName}</span><br><br>
         `);
 
+        const THIS = this;
+
         this.config.history.forEach(function(h){
             const record = `
-                <p><a href="">Version ${h.revision}</a>, by @${h.username}</p>
+                <p><a href="${THIS.config.viewPageUrl}${THIS.config.pageName}/${h.revision}">Version ${h.revision}</a>, by @${h.username}</p>
             `;
             $("#gomden-container").append(record);
 

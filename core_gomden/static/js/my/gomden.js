@@ -24,7 +24,12 @@ var Gomden = function () {
     }, {
         key: "loadPage",
         value: function loadPage() {
+            var revision = this.config.revision;
             var url = this.config.getPageUrl;
+            if (revision > 0) {
+                url += "/" + revision;
+            }
+
             var THIS = this;
 
             $.get(url).success(function (data) {
@@ -36,7 +41,13 @@ var Gomden = function () {
     }, {
         key: "loadPageFailure",
         value: function loadPageFailure(data) {
-            var html = "\n            <span class='gomden-title-page-name'>Missing page:" + this.config.pageName + "</span><br><br>\n            <h1># This page does not exist</h1><br>\n            Click the edit button (above) to create this page.\n            ";
+            var html = void 0;
+
+            if (this.config.revision === 0) {
+                html = "\n                <span class='gomden-title-page-name'>Missing page:" + this.config.pageName + "</span><br><br>\n                <h1># This page does not exist</h1><br>\n                Click the edit button (above) to create this page.\n                ";
+            } else {
+                html = "Either the page does not exist, or the revision number for the page does not exist";
+            }
             $("#gomden-container").html(html);
         }
     }, {
@@ -153,8 +164,10 @@ var Gomden = function () {
         value: function launchHistory() {
             $("#gomden-container").append("\n            <span class='gomden-title-page-name'>History for page:" + this.config.pageName + "</span><br><br>\n        ");
 
+            var THIS = this;
+
             this.config.history.forEach(function (h) {
-                var record = "\n                <p><a href=\"\">Version " + h.revision + "</a>, by @" + h.username + "</p>\n            ";
+                var record = "\n                <p><a href=\"" + THIS.config.viewPageUrl + THIS.config.pageName + "/" + h.revision + "\">Version " + h.revision + "</a>, by @" + h.username + "</p>\n            ";
                 $("#gomden-container").append(record);
             });
         }

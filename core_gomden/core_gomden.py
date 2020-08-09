@@ -24,20 +24,30 @@ core_gomden_blueprint = Blueprint('core_gomden_blueprint', __name__, template_fo
 class EmptyForm(FlaskForm):
     pass
 
+@core_gomden_blueprint.route("/page/<pagename>/<revision>")
 @core_gomden_blueprint.route("/page/<pagename>")
-def viewPage(pagename):
+def viewPage(pagename, revision=None):
     if not config.sanePagename(pagename):
         abort(404)
 
     form = EmptyForm()
-    return render_template("wikipage.html", pagename=pagename, wikipage=True, form=form)
+    if revision == None:
+        revision = 0
+    else:
+        try:
+            revision = int(revision)
+        except:
+            abort(404)
 
+    return render_template("wikipage.html", pagename=pagename, wikipage=True, form=form, revision=revision)
+
+@core_gomden_blueprint.route("/get-page/<pagename>/<revision>")
 @core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])
-def getPage(pagename):
+def getPage(pagename, revision=None):
     if not config.sanePagename(pagename):
         abort(404)
 
-    page = db.getPage(pagename)
+    page = db.getPage(pagename, revision)
 
     if not page:
         abort(404)

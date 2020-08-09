@@ -24,6 +24,7 @@
     var config = {
         pageName: "{{pagename}}",
         history: {{history | safe}},
+        viewPageRevisionUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='') }}",
         viewPageUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='') }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
         getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename) }}",
