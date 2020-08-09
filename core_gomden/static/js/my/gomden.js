@@ -136,6 +136,8 @@ var Gomden = function () {
             }
 
             $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <p><a class=\"gomden-page-link\" href=\"" + this.config.viewPageUrl + this.config.pageName + "\">page:" + this.config.pageName + "</a> is owned by @" + this.config.ownerUsername + ".</p>\n            " + inside + "\n            </form>\n        ");
+
+            $("#allowEdits").prop("checked", this.config.allowEdits);
         }
     }]);
 

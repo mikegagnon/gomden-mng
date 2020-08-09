@@ -157,5 +157,8 @@ Click the edit button (above) to create this page.
             ${inside}
             </form>
         `);
+
+
+        $("#allowEdits").prop("checked", this.config.allowEdits);
     }
 }

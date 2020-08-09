@@ -121,6 +121,17 @@ def permissionsPage(pagename):
 
     userid = getUserOrAnonymousId()
     username = getUserOrAnonymousName()
+
+    permissions = db.getPagePermissions(pagename)
+    if permissions == None:
+        abort(500)
+
+
+    allowEdits = permissions["allowedits"]
+    if allowEdits == 1:
+        allowEdits = "true"
+    else:
+        allowEdits = "false"
         
     form = EmptyForm()
-    return render_template("permissions-wikipage.html", userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
+    return render_template("permissions-wikipage.html", allowEdits=allowEdits, userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
