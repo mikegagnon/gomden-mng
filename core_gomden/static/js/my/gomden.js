@@ -25,12 +25,20 @@ var Gomden = function () {
         key: "loadPage",
         value: function loadPage() {
             var url = this.config.getPageUrl;
+            var THIS = this;
 
             $.get(url).success(function (data) {
-                console.log(data);
+                THIS.loadPageSuccess(data);
             }).fail(function () {
                 console.error("loadPage failed");
             });
+        }
+    }, {
+        key: "loadPageSuccess",
+        value: function loadPageSuccess(data) {
+            console.log(data);
+
+            $("#gomden-container").text(data.page.content);
         }
     }]);
 

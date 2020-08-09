@@ -16,13 +16,20 @@ class Gomden {
 
     loadPage() {
         const url = this.config.getPageUrl;
+        const THIS = this;
 
-         $.get(url)
+        $.get(url)
             .success(function(data) {
-                console.log(data);
+                THIS.loadPageSuccess(data);
             })
             .fail(function() {
                 console.error("loadPage failed");
             });
     }
+
+    loadPageSuccess(data) {
+        console.log(data);
+
+        $("#gomden-container").text(data.page.content);
+    };
 }
