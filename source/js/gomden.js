@@ -50,6 +50,7 @@ class Gomden {
             }); 
     }
 
+    // Yes, this is janky
     loadEditPageSuccess(data) {
         $("#gomden-container").html(`
             <form action="${this.config.savePageUrl}" method="post">

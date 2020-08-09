@@ -57,6 +57,9 @@ var Gomden = function () {
                 console.error("loadPage failed");
             });
         }
+
+        // Yes, this is janky
+
     }, {
         key: "loadEditPageSuccess",
         value: function loadEditPageSuccess(data) {
