@@ -26,11 +26,16 @@ class EmptyForm(FlaskForm):
 
 @core_gomden_blueprint.route("/page/<pagename>")
 def viewPage(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
+
     form = EmptyForm()
     return render_template("wikipage.html", pagename=pagename, wikipage=True, form=form)
 
 @core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])
 def getPage(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
 
     page = db.getPage(pagename)
 
@@ -63,10 +68,15 @@ def getLinkedPages(page):
 
 @core_gomden_blueprint.route("/save-comment/<pagename>", methods=['POST'])
 def saveComment(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
     return jsonify({})
 
 @core_gomden_blueprint.route("/edit/<pagename>", methods=['GET'])
 def editPage(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
+        
     form = EmptyForm()
     return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
 
@@ -78,6 +88,9 @@ def getUserOrAnonymousId():
 
 @core_gomden_blueprint.route("/save/<pagename>", methods=['POST'])
 def savePage(pagename):
+    if not config.sanePagename(pagename):
+        abort(404)
+
     form = EmptyForm()
     # TODO: make robust
     newContent = request.form["textedit"]

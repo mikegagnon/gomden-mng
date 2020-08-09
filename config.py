@@ -86,3 +86,14 @@ def saneSubject(subject):
         len(subject) >= MIN_SUBJECT_LEN and
         len(subject) <= MAX_SUBJECT_LEN
     )
+
+PAGENAME_RE = re.compile(r"^[a-z0-9\-]+$", re.UNICODE)
+MIN_PAGENAME_LEN = 3
+MAX_PAGENAME_LEN = 100
+
+def sanePagename(pagename):
+    if len(pagename) < MIN_PAGENAME_LEN or len(pagename) > MAX_PAGENAME_LEN:
+        return False
+    if not PAGENAME_RE.match(pagename):
+        return False
+    return True
