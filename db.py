@@ -355,6 +355,8 @@ def toPageJson(record):
         "ts": record[4]
     }
 
+
+
 # Get the most recent page
 @ErrorRollback
 def getPage(pagename):
@@ -428,3 +430,29 @@ def savePage(contributoruserid, pagename, content):
 
     c.close()
     conn.commit()
+
+# Optimization idea: run getExistingPagenames upon edit and store results:
+# slower writes / faster reads?
+@ErrorRollback
+def getExistingPagenames(pagenames):
+    conn = getConn()
+    c = conn.cursor()
+
+    # Limit to 500 to avoid slamming database
+    trimmedPagenames = pagenames[:500]
+
+    c.execute("""SELECT pagename FROM pages WHERE pagename IN %s""", (tuple(trimmedPagenames),))
+
+    results = c.fetchall()
+    c.close()
+    conn.commit()
+
+    if not results:
+        return []
+
+    print(results)
+
+    return results
+
+
+

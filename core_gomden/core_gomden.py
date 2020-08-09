@@ -12,6 +12,7 @@ import cgi
 import db
 import config
 from gomden_log import *
+import re
 
 send_email = None
 def init(se):
@@ -42,13 +43,23 @@ def getPage(pagename):
     if not pagePermissions:
         abort(500)
 
+    pagenames = getLinkedPages(page)
+
+    existingPagenames = db.getExistingPagenames(pagenames)
+
     result = {
         "page": page,
-        "permissions": pagePermissions
+        "permissions": pagePermissions,
+        "existingPagenames": existingPagenames,
     }
 
     return jsonify(result)
 
+# Extracts all pagenames linked from content
+def getLinkedPages(page):
+    content = page["content"]
+    matches = re.findall(r"page:([0-9a-z-]{3,100})", content)
+    return matches
 
 @core_gomden_blueprint.route("/save-comment/<pagename>", methods=['POST'])
 def saveComment(pagename):

@@ -39,8 +39,6 @@ class Gomden {
     }
 
     applyHeaders(escaped) {
-        //var regexp = new RegExp(something, 'ig');
-        //str.replace(regexp, '<span class="marked">$&</span>')
         return escaped.replace(/^# (.*)$/mg, "<h1 class='gomden-header'># $1</h1>")
             .replace(/^## (.*)$/mg, "<h2 class='gomden-header'>## $1</h2>")
             .replace(/^### (.*)$/mg, "<h3 class='gomden-header'>### $1</h3>")
