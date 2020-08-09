@@ -92,14 +92,37 @@ def getUserOrAnonymousName():
     else:
         return "Anonymous"
 
+def hasPermissionToSavePage(pagename):
+
+    permissions = db.getPagePermissions(pagename)
+
+    # If the page does not exist, then let any user create the page
+    if permissions == None:
+        return True
+
+    userid = getUserOrAnonymousId()
+
+    # If the user is not anonymous AND the user is the owner
+    if userid != 0 and permissions["owneruserid"] == userid:
+        return True
+
+    return permissions["allowedits"]
+
 @core_gomden_blueprint.route("/save/<pagename>", methods=['POST'])
 def savePage(pagename):
     if not config.sanePagename(pagename):
         abort(404)
 
+    if not hasPermissionToSavePage(pagename):
+        abort(403)
+
     form = EmptyForm()
+
     # TODO: make robust
     newContent = request.form["textedit"]
+
+    if not config.saneContent(newContent):
+        abort(403)
     
     contributoruserid = getUserOrAnonymousId()
 

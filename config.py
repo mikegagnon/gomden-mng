@@ -97,3 +97,7 @@ def sanePagename(pagename):
     if not PAGENAME_RE.match(pagename):
         return False
     return True
+
+MAX_CONTENT_LEN = 1000000
+def saneContent(content):
+    return len(content) <= MAX_CONTENT_LEN
