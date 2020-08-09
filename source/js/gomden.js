@@ -37,8 +37,22 @@ class Gomden {
         return $("<div>").text(text).html();
     }
 
+    applyHeaders(escaped) {
+        //var regexp = new RegExp(something, 'ig');
+        //str.replace(regexp, '<span class="marked">$&</span>')
+        return escaped.replace(/^# (.*)$/mg, "<h1 class='gomden-header'># $1</h1>")
+            .replace(/^## (.*)$/mg, "<h2 class='gomden-header'>## $1</h2>")
+            .replace(/^### (.*)$/mg, "<h3 class='gomden-header'>### $1</h3>")
+            .replace(/^#### (.*)$/mg, "<h4 class='gomden-header'>#### $1</h4>")
+
+            
+           
+    }
+
     wikipageToHtml(content) {
-        return this.escapeHtml(content).replace(/\n/g, "<br />");
+        const escaped = this.escapeHtml(content);
+        const withHeaders = this.applyHeaders(escaped);
+        return withHeaders.replace(/\n/g, "<br />");
     }
 
     launchEdit() {

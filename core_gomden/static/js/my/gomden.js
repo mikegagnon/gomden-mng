@@ -46,9 +46,18 @@ var Gomden = function () {
             return $("<div>").text(text).html();
         }
     }, {
+        key: "applyHeaders",
+        value: function applyHeaders(escaped) {
+            //var regexp = new RegExp(something, 'ig');
+            //str.replace(regexp, '<span class="marked">$&</span>')
+            return escaped.replace(/^# (.*)$/mg, "<h1 class='gomden-header'># $1</h1>").replace(/^## (.*)$/mg, "<h2 class='gomden-header'>## $1</h2>").replace(/^### (.*)$/mg, "<h3 class='gomden-header'>### $1</h3>").replace(/^#### (.*)$/mg, "<h4 class='gomden-header'>#### $1</h4>");
+        }
+    }, {
         key: "wikipageToHtml",
         value: function wikipageToHtml(content) {
-            return this.escapeHtml(content).replace(/\n/g, "<br />");
+            var escaped = this.escapeHtml(content);
+            var withHeaders = this.applyHeaders(escaped);
+            return withHeaders.replace(/\n/g, "<br />");
         }
     }, {
         key: "launchEdit",
