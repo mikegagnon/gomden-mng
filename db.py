@@ -401,3 +401,30 @@ def getPagePermissions(pagename):
         return None
 
     return toPagePermissionsJson(result)
+
+@ErrorRollback
+def savePage(contributoruserid, pagename, content):
+    conn = getConn()
+    c = conn.cursor()
+
+    c.execute("""
+        SELECT revision
+        FROM pages
+        WHERE pagename=%s
+        ORDER BY pageid DESC
+        LIMIT  1""", (pagename,))
+    result = c.fetchone()
+
+    if not result:
+        c.close()
+        conn.commit()
+        return False
+
+    revision = result[0] + 1
+    c.execute("""
+        INSERT INTO pages
+        (contributoruserid, pagename, revision, content)
+        VALUES (%s, %s, %s, %s) """, (contributoruserid, pagename, revision, content))
+
+    c.close()
+    conn.commit()

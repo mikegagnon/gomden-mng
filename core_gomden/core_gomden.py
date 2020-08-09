@@ -59,7 +59,22 @@ def editPage(pagename):
     form = EmptyForm()
     return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
 
+def getUserOrAnonymousId():
+    if "userid" in session:
+        return session["userid"]
+    else:
+        return "0" # zero indicates anonymous user
+
 @core_gomden_blueprint.route("/save/<pagename>", methods=['POST'])
 def savePage(pagename):
     form = EmptyForm()
-    return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
+    # TODO: make robust
+    newContent = request.form["textedit"]
+    
+    contributoruserid = getUserOrAnonymousId()
+
+    db.savePage(contributoruserid, pagename, newContent)
+    return redirect(url_for('core_gomden_blueprint.viewPage', pagename=pagename))
+
+
+    #return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
