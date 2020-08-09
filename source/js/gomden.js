@@ -60,15 +60,22 @@ class Gomden {
             .replace(/^#### (.*)$/mg, "<h4 class='gomden-header'>#### $1</h4>")
     }
 
-    applyLinks(withHeaders) {
-        return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, `<a class="gomden-page-link" href='${this.config.viewPageUrl}$1'>page:$1</a>`)
+    applyLinks(withExternalLinks) {
+        return withExternalLinks.replace(/page:([0-9a-z-]{3,100})/mg, `<a class="gomden-page-link" href='${this.config.viewPageUrl}$1'>page:$1</a>`)
     }
 
     wikipageToHtml(content) {
         const escaped = this.escapeHtml(content);
         const withHeaders = this.applyHeaders(escaped);
-        const withLinks = this.applyLinks(withHeaders);
+        const withExternalLinks = this.applyExternalLinks(withHeaders);
+        const withLinks = this.applyLinks(withExternalLinks);
         return withLinks.replace(/\n/g, "<br />");
+    }
+
+    // From: https://www.codespeedy.com/replace-url-with-clickable-link-javascript/
+    applyExternalLinks(withHeaders) {
+        const exp_match = /(\b(https?|):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        return withHeaders.replace(exp_match, "<a href='$1'>$1</a>");
     }
 
     launchEdit() {

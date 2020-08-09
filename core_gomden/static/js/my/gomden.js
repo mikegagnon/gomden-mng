@@ -65,16 +65,26 @@ var Gomden = function () {
         }
     }, {
         key: "applyLinks",
-        value: function applyLinks(withHeaders) {
-            return withHeaders.replace(/page:([0-9a-z-]{3,100})/mg, "<a class=\"gomden-page-link\" href='" + this.config.viewPageUrl + "$1'>page:$1</a>");
+        value: function applyLinks(withExternalLinks) {
+            return withExternalLinks.replace(/page:([0-9a-z-]{3,100})/mg, "<a class=\"gomden-page-link\" href='" + this.config.viewPageUrl + "$1'>page:$1</a>");
         }
     }, {
         key: "wikipageToHtml",
         value: function wikipageToHtml(content) {
             var escaped = this.escapeHtml(content);
             var withHeaders = this.applyHeaders(escaped);
-            var withLinks = this.applyLinks(withHeaders);
+            var withExternalLinks = this.applyExternalLinks(withHeaders);
+            var withLinks = this.applyLinks(withExternalLinks);
             return withLinks.replace(/\n/g, "<br />");
+        }
+
+        // From: https://www.codespeedy.com/replace-url-with-clickable-link-javascript/
+
+    }, {
+        key: "applyExternalLinks",
+        value: function applyExternalLinks(withHeaders) {
+            var exp_match = /(\b(https?|):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+            return withHeaders.replace(exp_match, "<a href='$1'>$1</a>");
         }
     }, {
         key: "launchEdit",
