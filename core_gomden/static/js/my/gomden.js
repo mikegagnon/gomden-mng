@@ -38,7 +38,8 @@ var Gomden = function () {
         value: function loadPageSuccess(data) {
             console.log(data);
             var html = this.wikipageToHtml(data.page.content);
-            $("#gomden-container").html(html);
+            var withTitle = "<span class='gomden-title-page-name'>Viewing link:" + data.page.pagename + "</span><br>" + html;
+            $("#gomden-container").html(withTitle);
         }
     }, {
         key: "escapeHtml",
@@ -53,11 +54,17 @@ var Gomden = function () {
             return escaped.replace(/^# (.*)$/mg, "<h1 class='gomden-header'># $1</h1>").replace(/^## (.*)$/mg, "<h2 class='gomden-header'>## $1</h2>").replace(/^### (.*)$/mg, "<h3 class='gomden-header'>### $1</h3>").replace(/^#### (.*)$/mg, "<h4 class='gomden-header'>#### $1</h4>");
         }
     }, {
+        key: "applyLinks",
+        value: function applyLinks(withHeaders) {
+            return withHeaders.replace(/link:([0-9a-z-]{3,100})/mg, "<a href='$1'>link:$1</a>");
+        }
+    }, {
         key: "wikipageToHtml",
         value: function wikipageToHtml(content) {
             var escaped = this.escapeHtml(content);
             var withHeaders = this.applyHeaders(escaped);
-            return withHeaders.replace(/\n/g, "<br />");
+            var withLinks = this.applyLinks(withHeaders);
+            return withLinks.replace(/\n/g, "<br />");
         }
     }, {
         key: "launchEdit",
