@@ -13,4 +13,3 @@ class EmptyForm(FlaskForm):
 def landing():
     form = EmptyForm()
     return render_template("wikipage.html", pagename="home", wikipage=True, form=form, revision=0)
-

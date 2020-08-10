@@ -59,6 +59,12 @@ class Gomden {
                 $(value).addClass("gomden-missing-page-link");
             }
         });
+
+        $("#gomden-container").append(`
+            <br>
+            <hr>
+            <p class="gomden-content-license"><br>The contents of this wiki page are licensed under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 License</a>.</p>
+            `)
     };
 
     escapeHtml(text) {
@@ -122,7 +128,8 @@ class Gomden {
         $("#gomden-container").html(`
             <form action="${this.config.savePageUrl}" method="post">
             <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
-            <button class="btn btn-primary" type="submit">Save</button>
+            <div><br><button class="btn btn-primary" type="submit">Save</button></div>
+            <p><br>By saving this wiki page, you agree to release your contribution under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 License</a>.</p>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
             </form>
         `);
@@ -134,7 +141,8 @@ class Gomden {
         $("#gomden-container").html(`
             <form action="${this.config.savePageUrl}" method="post">
             <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
-            <button class="btn btn-primary" type="submit">Save</button>
+            <div><br><button class="btn btn-primary" type="submit">Save</button></div>
+            <p><br>By saving this wiki page, you agree to release your contribution under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 License</a>.</p>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
             </form>
         `);
