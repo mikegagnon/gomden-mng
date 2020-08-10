@@ -22,6 +22,7 @@
     CSRF_TOKEN = "{{ csrf_token() }}";
 
     var config = {
+        license: "{{license | safe }}",
         pageName: "{{pagename}}",
         revision: {{revision}},
         viewPageUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='', revision=None) }}",

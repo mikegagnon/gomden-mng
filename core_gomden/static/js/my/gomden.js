@@ -64,7 +64,7 @@ var Gomden = function () {
                 }
             });
 
-            $("#gomden-container").append("\n            <br>\n            <hr>\n            <p class=\"gomden-content-license\"><br>The contents of this wiki page are licensed under the <a href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 License</a>.</p>\n            ");
+            $("#gomden-container").append("\n            <br>\n            <hr>\n            <p class=\"gomden-content-license\"><br>" + this.config.license + "</p>\n            ");
         }
     }, {
         key: "escapeHtml",
@@ -131,7 +131,7 @@ var Gomden = function () {
     }, {
         key: "loadEditPageSuccess",
         value: function loadEditPageSuccess(data) {
-            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <div><br><button class=\"btn btn-primary\" type=\"submit\">Save</button></div>\n            <p><br>By saving this wiki page, you agree to release your contribution under the <a href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC BY-SA 3.0 License</a>.</p>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
+            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <div><br><button class=\"btn btn-primary\" type=\"submit\">Save</button></div>\n            <p><br>" + this.config.editAgreement + "</p>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
             $("#gomden-editor").val(data.page.content);
         }
 

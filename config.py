@@ -30,6 +30,10 @@ BAD_PASSWORD_MESSAGE = """Incorrect password. Or you have not created and confir
 
 FORGOT_PASSWORD_MESSAGE = """Check your email for a link to reset your password. But, if you haven't yet created and confirmed your account (via the confirmation-link email), you will not receive an email."""
 
+LICENSE = "The contents of this wiki page are copyrighted by the author(s) of this wiki page."
+
+EDIT_AGREEMENT = "By saving this wiki page, you retain the copyright of your contribution. However, by saving this wiki page, you agree to irrevocably license your copyrighted contribution to the owner of this wiki, agreeing to allow the owner of this wiki to publish your contribution on this wiki"
+
 def saneUsername(username):
     return (
         len(username) >= MIN_USERNAME_LEN and

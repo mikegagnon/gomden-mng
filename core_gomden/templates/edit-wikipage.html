@@ -25,6 +25,8 @@
     CSRF_TOKEN = "{{ csrf_token() }}";
 
     var config = {
+        license: "{{license | safe }}",
+        editAgreement: "{{editAgreement | safe}}",
         allowEdit: {{allowEdit}},
         ownerUsername: "{{ownerUsername}}",
         pageName: "{{pagename}}",

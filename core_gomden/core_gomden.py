@@ -39,7 +39,7 @@ def viewPage(pagename, revision=None):
         except:
             abort(404)
 
-    return render_template("wikipage.html", pagename=pagename, wikipage=True, form=form, revision=revision)
+    return render_template("wikipage.html", license=config.LICENSE, pagename=pagename, wikipage=True, form=form, revision=revision)
 
 @core_gomden_blueprint.route("/get-page/<pagename>/<revision>")
 @core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])
@@ -96,9 +96,9 @@ def editPage(pagename):
 
     form = EmptyForm()
     if hasPermissionToSavePage(pagename):
-        return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form, allowEdit="true", ownerUsername=owner["username"])
+        return render_template("edit-wikipage.html", editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="true", ownerUsername=owner["username"])
     else:
-        return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
+        return render_template("edit-wikipage.html", editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
 
 def getUserOrAnonymousId():
     if "userid" in session:
@@ -179,9 +179,6 @@ def savePermissions(pagename):
     db.savePermissions(pagename, allowEdits)
     return redirect(url_for('core_gomden_blueprint.viewPage', pagename=pagename))
 
-#savePermissions
-    #return render_template("edit-wikipage.html", pagename=pagename, wikipage=True, form=form)
-
 @core_gomden_blueprint.route("/permissions/<pagename>", methods=['GET'])
 def permissionsPage(pagename):
     if not config.sanePagename(pagename):
@@ -206,7 +203,7 @@ def permissionsPage(pagename):
         allowEdits = "false"
         
     form = EmptyForm()
-    return render_template("permissions-wikipage.html", allowEdits=allowEdits, userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
+    return render_template("permissions-wikipage.html", license=config.LICENSE, allowEdits=allowEdits, userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
 
 @core_gomden_blueprint.route("/history/<pagename>", methods=['GET'])
 def historyPage(pagename):
@@ -216,4 +213,4 @@ def historyPage(pagename):
     history = json.dumps(db.getHistory(pagename))
 
     form = EmptyForm()
-    return render_template("history-wikipage.html", pagename=pagename, wikipage=True, form=form, history=history)
+    return render_template("history-wikipage.html", license=config.LICENSE, pagename=pagename, wikipage=True, form=form, history=history)
