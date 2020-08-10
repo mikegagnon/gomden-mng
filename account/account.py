@@ -76,10 +76,10 @@ def forgot():
         token=token,
         _external=True)
 
-    subject = "Gomden.wiki: reset your password"
+    subject = "MichaelGagnon.wiki: reset your password"
     sender = config.NOREPLY_EMAIL
     recipient = email
-    body = ("Follow this link to reset your password with Gomden.wiki: " + reset_url)
+    body = ("Follow this link to reset your password with MichaelGagnon.wiki: " + reset_url)
 
     info(funcname, f"sending password-reset email to user")
     send_email.delay(subject, sender, recipient, body)
@@ -102,23 +102,23 @@ def sendConfirmationEmail(username, email):
         token=token,
         _external=True)
 
-    subject = "Gomden.wiki: please confirm your email"
+    subject = "MichaelGagnon.wiki: please confirm your email"
     sender = config.NOREPLY_EMAIL
     recipient = email
-    body = ("Follow this link to confirm your new account with Gomden.wiki: " +
+    body = ("Follow this link to confirm your new account with MichaelGagnon.wiki: " +
             confirm_url)
 
     send_email.delay(subject, sender, recipient, body)
 
 def sendCannotCreateAccount(email):
-    subject = "Gomden.wiki: Cannot create account"
+    subject = "MichaelGagnon.wiki: Cannot create account"
     sender = config.NOREPLY_EMAIL
     recipient = email
-    body = ("You (or someone else), attempted to register a new account with your email address. Did you forget your username or password? If so, follow this link to reset your password for Gomden.wiki: " + url_for("account_blueprint.forgot", _external=True))
+    body = ("You (or someone else), attempted to register a new account with your email address. Did you forget your username or password? If so, follow this link to reset your password for MichaelGagnon.wiki: " + url_for("account_blueprint.forgot", _external=True))
     send_email.delay(subject, sender, recipient, body)
 
 def sendNewRegisteredEmailToAdmin(username):
-    subject = "Gomden.wiki new user registered"
+    subject = "MichaelGagnon.wiki new user registered"
     sender = config.NOREPLY_EMAIL
     recipient = config.ADMIN_EMAIL
     body = f"A new user registered: @{username}"
