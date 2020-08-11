@@ -7,6 +7,9 @@ NOREPLY_EMAIL = "noreply@sidewise.academy" #NOREPLY_EMAIL = "noreply@gomden.wiki
 FLASK_EMAIL_SERVER = os.environ["FLASK_EMAIL_SERVER"]
 FLASK_EMAIL_PASSWORD = os.environ["FLASK_EMAIL_PASSWORD"]
 REDIS_URL = os.environ["REDIS_URL"]
+CAPTCHA_CONFIG = {
+    "SECRET_CSRF_KEY": "captcha" + SECRET_KEY
+}
 
 MIN_USERNAME_LEN = 3
 MAX_USERNAME_LEN = 15

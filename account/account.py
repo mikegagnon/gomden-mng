@@ -12,11 +12,14 @@ import db
 
 bcrypt = None
 send_email = None
-def init(app, se):
+CAPTCHA = None
+def init(app, se, captcha):
     global send_email
     global bcrypt
+    global CAPTCHA
     bcrypt = Bcrypt(app)
     send_email = se
+    CAPTCHA = captcha
 
 timedSerializer = URLSafeTimedSerializer(config.SECRET_KEY)
 
@@ -173,13 +176,15 @@ def create_account():
 
     form = CreateAccountForm(request.form)
 
+    captcha = CAPTCHA.create()
+
     if "userid" in session:
         debug(funcname, 'Already logged in')
         return render_template("already_loggedin.html", form=form)
 
     if request.method == "GET":
         debug(funcname, 'request.method == "GET"')
-        return render_template("create-account.html", form=form, message=None)
+        return render_template("create-account.html", captcha=captcha, form=form, message=None)
     
     if not form.validate_on_submit():
         error(funcname, 'not form.validate_on_submit()')
@@ -191,35 +196,41 @@ def create_account():
     password1 = form.password1.data
     password2 = form.password2.data
 
+    c_hash = request.form.get('captcha-hash')
+    c_text = request.form.get('captcha-text')
+    if not CAPTCHA.verify(c_text, c_hash):
+        debug(funcname, 'bad captcha response')
+        return render_template("create-account.html", captcha=captcha, form=form, message="I apologize, but your solution to the puzzle is not correct. I know this is annoying, but please try again.")
+    
     if not config.saneUsername(username):
         debug(funcname, 'not saneUsername(username)')
-        return render_template("create-account.html", form=form, message="Invalid username.")
+        return render_template("create-account.html", captcha=captcha, form=form, message="Invalid username.")
 
     if not config.saneDisplayName(displayname):
         debug(funcname, 'not saneDisplayName(displayname)')
-        return render_template("create-account.html", form=form, message="Invalid display name.")
+        return render_template("create-account.html", captcha=captcha, form=form, message="Invalid display name.")
 
     if not config.saneEmail(email):
         debug(funcname, 'not saneEmail(email)')
-        return render_template("create-account.html", form=form, message="Invalid email address.")
+        return render_template("create-account.html", captcha=captcha, form=form, message="Invalid email address.")
 
     if not config.sanePassword(password1) or not config.sanePassword(password2):
         debug(funcname, f"password(s) aren't sane")
         message = """
             Your password must be at least %d characters long
             """ % config.MIN_PASSWORD_LEN
-        return render_template("create-account.html", form=form, message=message)
+        return render_template("create-account.html", captcha=captcha, form=form, message=message)
 
     if password1 != password2:
         debug(funcname, f"passwords don't match")
         message = "Your passwords do not match."
-        return render_template("create-account.html",  form=form, message=message)
+        return render_template("create-account.html", captcha=captcha, form=form, message=message)
 
     user = db.getConfirmedUserByUsername(username)
     if user:
         debug(funcname, "username already taken: %s" % username)
         message = "The username @" + username + " is already taken."
-        return render_template("create-account.html", form=form, message=message)
+        return render_template("create-account.html", captcha=captcha, form=form, message=message)
 
     # We know: username is not taken
 
@@ -248,7 +259,7 @@ def create_account():
         # We know: username is not taken, but this email address is aleady confirmed
         bcrypt.generate_password_hash("prevent side channel")
         sendCannotCreateAccount(email)
-        return render_template("create-account-success.html", form=form, email=email)
+        return render_template("create-account-success.html", captcha=captcha, form=form, email=email)
 
     # If this email address and username are neither confirmed
     else:

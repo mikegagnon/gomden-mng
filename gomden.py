@@ -13,10 +13,13 @@ import string
 import os
 
 import config
+from flask_simple_captcha import CAPTCHA
 
 from core_gomden.core_gomden import core_gomden_blueprint, init as initCore
 from landing.landing import landing_blueprint
 from account.account import account_blueprint, init as initAccount
+
+
 
 app = Flask(__name__, static_url_path="/static")
 sslify = SSLify(app)
@@ -33,6 +36,10 @@ from flask_mail import  Message
 from celery import Celery
 
 celery = Celery(app, broker=config.REDIS_URL)
+
+
+CAPTCHA = CAPTCHA(config=config.CAPTCHA_CONFIG)
+app = CAPTCHA.init_app(app)
 
 # TODO: rm/simplify print-based logging
 @celery.task()
@@ -60,5 +67,5 @@ app.config.update(
 
 mail = Mail(app)
 
-initAccount(app, send_email)
+initAccount(app, send_email, CAPTCHA)
 initCore(send_email)
