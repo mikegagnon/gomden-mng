@@ -142,7 +142,7 @@ class Gomden {
             <form action="${this.config.savePageUrl}" method="post">
             <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
             <div><br><button class="btn btn-primary" type="submit">Save</button></div>
-            <p><br>By saving this wiki page, you agree to release your contribution under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 License</a>.</p>
+            <p><br>${this.config.editAgreement}</p>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
             </form>
         `);

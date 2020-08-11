@@ -25,6 +25,7 @@
     CSRF_TOKEN = "{{ csrf_token() }}";
 
     var config = {
+        license: "{{license | safe }}",
         username: "{{username}}",
         userid: {{userid}},
         ownerUsername: "{{ownerUsername}}",
