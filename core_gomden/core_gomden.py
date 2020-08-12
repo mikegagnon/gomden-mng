@@ -107,6 +107,8 @@ def editPage(pagename):
         anonymous = "false"
     else:
         anonymous = "true"
+        # Temporary hack: disable anonymous edits
+        return render_template("no-edit.html", anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
 
     if hasPermissionToSavePage(pagename):
         return render_template("edit-wikipage.html", anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="true", ownerUsername=owner["username"])
@@ -148,6 +150,11 @@ def savePage(pagename):
 
     if not hasPermissionToSavePage(pagename):
         abort(403)
+
+    # Temporary hack: disable anonymous edits
+    if "userid" not in session:
+        abort(403)
+
 
     c_hash = request.form.get('captcha-hash')
     c_text = request.form.get('captcha-text')

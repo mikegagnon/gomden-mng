@@ -1,0 +1,18 @@
+
+{% extends "layout.html" %}
+{% block title %}MichaelGagnon.wiki{% endblock %}
+{% block edit_wikipage_active %}active{% endblock %}
+
+
+{% block wikipageincludes %}
+    <script src="{{ url_for('core_gomden_blueprint.static', filename='js/my/gomden.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="gomden-container" class="container">
+    You must log in to edit pages.
+</div>
+
+
+{% endblock %}
