@@ -15,9 +15,12 @@ from gomden_log import *
 import re
 
 send_email = None
-def init(se):
+CAPTCHA = None
+def init(se, captcha):
     global send_email
+    global CAPTCHA
     send_email = se
+    CAPTCHA = captcha
 
 core_gomden_blueprint = Blueprint('core_gomden_blueprint', __name__, template_folder='templates', static_folder='static', static_url_path='/core-static')
 
@@ -95,10 +98,20 @@ def editPage(pagename):
         }
 
     form = EmptyForm()
-    if hasPermissionToSavePage(pagename):
-        return render_template("edit-wikipage.html", editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="true", ownerUsername=owner["username"])
+    captcha = CAPTCHA.create()
+    #captchaHtml = CAPTCHA.captcha_html(captcha)
+    captchaImg = captcha["img"]
+    captchaHash = captcha["hash"]
+
+    if "userid" in session:
+        anonymous = "false"
     else:
-        return render_template("edit-wikipage.html", editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
+        anonymous = "true"
+
+    if hasPermissionToSavePage(pagename):
+        return render_template("edit-wikipage.html", anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="true", ownerUsername=owner["username"])
+    else:
+        return render_template("edit-wikipage.html", anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
 
 def getUserOrAnonymousId():
     if "userid" in session:
@@ -134,6 +147,11 @@ def savePage(pagename):
         abort(404)
 
     if not hasPermissionToSavePage(pagename):
+        abort(403)
+
+    c_hash = request.form.get('captcha-hash')
+    c_text = request.form.get('captcha-text')
+    if not CAPTCHA.verify(c_text, c_hash):
         abort(403)
 
     form = EmptyForm()

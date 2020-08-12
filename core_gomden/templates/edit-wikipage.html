@@ -25,6 +25,9 @@
     CSRF_TOKEN = "{{ csrf_token() }}";
 
     var config = {
+        anonymous: {{anonymous}},
+        captchaImg: "{{captchaImg}}",
+        captchaHash: "{{captchaHash}}",
         license: "{{license | safe }}",
         editAgreement: "{{editAgreement | safe}}",
         allowEdit: {{allowEdit}},

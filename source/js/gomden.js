@@ -128,12 +128,24 @@ class Gomden {
         $("#gomden-container").html(`
             <form action="${this.config.savePageUrl}" method="post">
             <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
+            <div id="captcha-div"></div>
             <div><br><button class="btn btn-primary" type="submit">Save</button></div>
             <p><br>${this.config.editAgreement}</p>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
             </form>
         `);
         $("#gomden-editor").val(data.page.content);
+
+        if (this.config.anonymous) {
+            $("#captcha-div").append(`<div>
+                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>
+                <img class="simple-captcha-img" src="data:image/png;base64, ${this.config.captchaImg}">
+                <input type="text" class="simple-captcha-text" name="captcha-text">
+                <input type="hidden" name="captcha-hash" value="${this.config.captchaHash}">
+            </div>`);
+        }
+
+
     }
 
     // Yes, this is janky
@@ -141,6 +153,7 @@ class Gomden {
         $("#gomden-container").html(`
             <form action="${this.config.savePageUrl}" method="post">
             <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
+            <div id="captcha-div"></div>
             <div><br><button class="btn btn-primary" type="submit">Save</button></div>
             <p><br>${this.config.editAgreement}</p>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
@@ -150,6 +163,15 @@ class Gomden {
 Click the edit button (above) to create this page.
 `;
         $("#gomden-editor").val(content);
+
+        if (this.config.anonymous) {
+            $("#captcha-div").append(`<div>
+                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>
+                <img class="simple-captcha-img" src="data:image/png;base64, ${this.config.captchaImg}">
+                <input type="text" class="simple-captcha-text" name="captcha-text">
+                <input type="hidden" name="captcha-hash" value="${this.config.captchaHash}">
+            </div>`);
+        }
     }
 
     launchPermissions() {

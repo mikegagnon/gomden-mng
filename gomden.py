@@ -68,4 +68,4 @@ app.config.update(
 mail = Mail(app)
 
 initAccount(app, send_email, CAPTCHA)
-initCore(send_email)
+initCore(send_email, CAPTCHA)
