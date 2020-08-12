@@ -138,7 +138,7 @@ class Gomden {
 
         if (this.config.anonymous) {
             $("#captcha-div").append(`<div>
-                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>
+                <p>Since you are not logged in, please type in the letters that you see in the graphic below. <b>UNFORTUNATELY, IF YOU GET IT WRONG YOUR EDIT WILL BE LOST; SAVE YOUR EDIT ON YOUR OWN COMPUTER IN CASE YOU TYPE IN THE WRONG ANSWER. SORRY, I KNOW THIS IS LAME!</b></p>
                 <img class="simple-captcha-img" src="data:image/png;base64, ${this.config.captchaImg}">
                 <input type="text" class="simple-captcha-text" name="captcha-text">
                 <input type="hidden" name="captcha-hash" value="${this.config.captchaHash}">
@@ -166,7 +166,7 @@ Click the edit button (above) to create this page.
 
         if (this.config.anonymous) {
             $("#captcha-div").append(`<div>
-                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>
+                <p>Since you are not logged in, please type in the letters that you see in the graphic below. <b>UNFORTUNATELY, IF YOU GET IT WRONG YOUR EDIT WILL BE LOST; SAVE YOUR EDIT ON YOUR OWN COMPUTER IN CASE YOU TYPE IN THE WRONG ANSWER. SORRY, I KNOW THIS IS LAME!</b></p>
                 <img class="simple-captcha-img" src="data:image/png;base64, ${this.config.captchaImg}">
                 <input type="text" class="simple-captcha-text" name="captcha-text">
                 <input type="hidden" name="captcha-hash" value="${this.config.captchaHash}">

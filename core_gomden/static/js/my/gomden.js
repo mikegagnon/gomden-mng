@@ -135,7 +135,7 @@ var Gomden = function () {
             $("#gomden-editor").val(data.page.content);
 
             if (this.config.anonymous) {
-                $("#captcha-div").append("<div>\n                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>\n                <img class=\"simple-captcha-img\" src=\"data:image/png;base64, " + this.config.captchaImg + "\">\n                <input type=\"text\" class=\"simple-captcha-text\" name=\"captcha-text\">\n                <input type=\"hidden\" name=\"captcha-hash\" value=\"" + this.config.captchaHash + "\">\n            </div>");
+                $("#captcha-div").append("<div>\n                <p>Since you are not logged in, please type in the letters that you see in the graphic below. <b>UNFORTUNATELY, IF YOU GET IT WRONG YOUR EDIT WILL BE LOST; SAVE YOUR EDIT ON YOUR OWN COMPUTER IN CASE YOU TYPE IN THE WRONG ANSWER. SORRY, I KNOW THIS IS LAME!</b></p>\n                <img class=\"simple-captcha-img\" src=\"data:image/png;base64, " + this.config.captchaImg + "\">\n                <input type=\"text\" class=\"simple-captcha-text\" name=\"captcha-text\">\n                <input type=\"hidden\" name=\"captcha-hash\" value=\"" + this.config.captchaHash + "\">\n            </div>");
             }
         }
 
@@ -149,7 +149,7 @@ var Gomden = function () {
             $("#gomden-editor").val(content);
 
             if (this.config.anonymous) {
-                $("#captcha-div").append("<div>\n                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>\n                <img class=\"simple-captcha-img\" src=\"data:image/png;base64, " + this.config.captchaImg + "\">\n                <input type=\"text\" class=\"simple-captcha-text\" name=\"captcha-text\">\n                <input type=\"hidden\" name=\"captcha-hash\" value=\"" + this.config.captchaHash + "\">\n            </div>");
+                $("#captcha-div").append("<div>\n                <p>Since you are not logged in, please type in the letters that you see in the graphic below. <b>UNFORTUNATELY, IF YOU GET IT WRONG YOUR EDIT WILL BE LOST; SAVE YOUR EDIT ON YOUR OWN COMPUTER IN CASE YOU TYPE IN THE WRONG ANSWER. SORRY, I KNOW THIS IS LAME!</b></p>\n                <img class=\"simple-captcha-img\" src=\"data:image/png;base64, " + this.config.captchaImg + "\">\n                <input type=\"text\" class=\"simple-captcha-text\" name=\"captcha-text\">\n                <input type=\"hidden\" name=\"captcha-hash\" value=\"" + this.config.captchaHash + "\">\n            </div>");
             }
         }
     }, {
