@@ -131,11 +131,14 @@ var Gomden = function () {
     }, {
         key: "loadEditPageSuccess",
         value: function loadEditPageSuccess(data) {
-            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <div id=\"captcha-div\"></div>\n            <div><br><button class=\"btn btn-primary\" type=\"submit\">Save</button></div>\n            <p><br>" + this.config.editAgreement + "</p>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
+            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\" id=\"my-form\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <div id=\"captcha-div\"></div>\n            <div><br><button id=\"save-submit-button\" class=\"btn btn-primary\" type=\"button\">Save</button></div>\n            <p><br>" + this.config.editAgreement + "</p>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
             $("#gomden-editor").val(data.page.content);
 
             if (this.config.anonymous) {
                 $("#captcha-div").append("<div>\n                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>\n                <img class=\"simple-captcha-img\" src=\"data:image/png;base64, " + this.config.captchaImg + "\">\n                <input type=\"text\" class=\"simple-captcha-text\" name=\"captcha-text\">\n                <input type=\"hidden\" name=\"captcha-hash\" value=\"" + this.config.captchaHash + "\">\n            </div>");
+                $("#save-submit-button").click(function () {
+                    $("#my-form").submit();
+                });
             }
         }
 

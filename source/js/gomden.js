@@ -126,10 +126,10 @@ class Gomden {
     // Yes, this is janky
     loadEditPageSuccess(data) {
         $("#gomden-container").html(`
-            <form action="${this.config.savePageUrl}" method="post">
+            <form action="${this.config.savePageUrl}" method="post" id="my-form">
             <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
             <div id="captcha-div"></div>
-            <div><br><button class="btn btn-primary" type="submit">Save</button></div>
+            <div><br><button id="save-submit-button" class="btn btn-primary" type="button">Save</button></div>
             <p><br>${this.config.editAgreement}</p>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
             </form>
@@ -143,6 +143,9 @@ class Gomden {
                 <input type="text" class="simple-captcha-text" name="captcha-text">
                 <input type="hidden" name="captcha-hash" value="${this.config.captchaHash}">
             </div>`);
+            $("#save-submit-button").click(function(){
+                $("#my-form").submit();
+            })
         }
 
 
