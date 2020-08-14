@@ -44,7 +44,7 @@ var Gomden = function () {
             var html = void 0;
 
             if (this.config.revision === 0) {
-                html = "\n                <span class='gomden-title-page-name'>Missing page:" + this.config.pageName + "</span><br><br>\n                <h1># This page does not exist</h1><br>\n                Click the edit button (above) to create this page.\n                ";
+                html = "\n                <span class='gomden-title-page-name'>Missing page:" + this.config.pageName + "</span><br><br>\n                <h1 class=\"gomden-h1\"># This page does not exist</h1><br>\n                Click the edit button (above) to create this page.\n                ";
             } else {
                 html = "Either the page does not exist, or the revision number for the page does not exist";
             }
@@ -74,7 +74,7 @@ var Gomden = function () {
     }, {
         key: "applyHeaders",
         value: function applyHeaders(escaped) {
-            return escaped.replace(/^# (.*)$/mg, "<h1 class='gomden-header'># $1</h1>").replace(/^## (.*)$/mg, "<h2 class='gomden-header'>## $1</h2>").replace(/^### (.*)$/mg, "<h3 class='gomden-header'>### $1</h3>").replace(/^#### (.*)$/mg, "<h4 class='gomden-header'>#### $1</h4>");
+            return escaped.replace(/^# (.*)$/mg, "<h1 class='gomden-h1'># $1</h1>").replace(/^## (.*)$/mg, "<h2 class='gomden-h2'>## $1</h2>");
         }
     }, {
         key: "applyLinks",

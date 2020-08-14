@@ -1,5 +1,13 @@
-.gomden-header { 
+.gomden-h1 { 
     font-family: Helvetica, Arial, Sans-Serif;
+    font-size: 22pt;
+    font-weight: bold;
+}
+
+.gomden-h2 { 
+    font-family: Helvetica, Arial, Sans-Serif;
+    font-size: 18pt;
+    font-weight: bold;
 }
 
 .gomden-title-page-name {
