@@ -202,6 +202,13 @@ def create_account():
         debug(funcname, 'bad captcha response')
         return render_template("create-account.html", captcha=captcha, form=form, message="I apologize, but your solution to the puzzle is not correct. I know this is annoying, but please try again.")
     
+    if db.isCaptchaAlreadyUsed(c_text):
+        # TODO: good error message
+        print("replay")
+        return render_template("create-account.html", captcha=captcha, form=form, message="I apologize, but your solution to the puzzle is odd. I know this is annoying, but please try again.")
+
+    db.markCaptchaAsUsed(c_text)
+
     if not config.saneUsername(username):
         debug(funcname, 'not saneUsername(username)')
         return render_template("create-account.html", captcha=captcha, form=form, message="Invalid username.")

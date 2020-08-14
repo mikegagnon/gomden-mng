@@ -567,3 +567,35 @@ def getHistory(pagename):
 
     #print(json.dumps(history, indent=4, sort_keys=True))
     return history
+
+@ErrorRollback
+def isCaptchaAlreadyUsed(c_text):
+    # milliseconds in a day == 86400000
+    # Begin by cleaning up captcha table
+    conn = getConn()
+    c = conn.cursor()
+    c.execute("""
+        DELETE FROM captchas WHERE ts + 86400000 < CAST((extract(epoch from now()) * 1000) as BIGINT) 
+        """)
+
+    # Then, look for the captcha
+    c.execute("""
+        SELECT ctext FROM captchas WHERE ctext=%s
+        """, (c_text,))
+    found = c.fetchone() is not None
+    c.close()
+    conn.commit()
+
+    return found
+
+@ErrorRollback
+def markCaptchaAsUsed(c_text):
+    conn = getConn()
+    c = conn.cursor()
+
+    c.execute("""
+        INSERT INTO captchas
+        (ctext)
+        VALUES (%s) """, (c_text,))
+    c.close()
+    conn.commit()

@@ -166,7 +166,16 @@ def savePage(pagename):
     c_hash = request.form.get('captcha-hash')
     c_text = request.form.get('captcha-text')
     if not CAPTCHA.verify(c_text, c_hash):
+        # TODO: good error message
+        print("bad hash")
         abort(403)
+
+    if db.isCaptchaAlreadyUsed(c_text):
+        # TODO: good error message
+        print("replay")
+        abort(403)
+
+    db.markCaptchaAsUsed(c_text)
 
     form = EmptyForm()
 

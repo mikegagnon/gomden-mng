@@ -32,6 +32,19 @@ CREATE TABLE "pages" (
     "ts" BIGINT DEFAULT CAST((extract(epoch from now()) * 1000) as BIGINT) /* num milliseconds since epoch */
 );
 
+/*
+    Each record in captchas contains the text of a captcha that has been
+    verified. This way, when a new captcha solution comes in, we can prevent
+    replay attacks by making sure the captcha isn't in the database.
+    Also, I'm going to write code to clean up old captchas so that they can
+    be reused in the future.
+*/
+CREATE TABLE "captchas" (
+    "captchaid" BIGSERIAL PRIMARY KEY,
+    "ctext" TEXT,
+    "ts" BIGINT DEFAULT CAST((extract(epoch from now()) * 1000) as BIGINT) /* num milliseconds since epoch */
+);
+
 CREATE TABLE "pagepermissions" (
     "pagepermissionid" BIGSERIAL PRIMARY KEY,
     "pagename" TEXT,
