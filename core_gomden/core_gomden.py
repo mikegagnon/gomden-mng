@@ -185,7 +185,20 @@ def savePage(pagename):
     
     contributoruserid = getUserOrAnonymousId()
 
-    db.savePage(contributoruserid, pagename, newContent)
+    revision = db.savePage(contributoruserid, pagename, newContent)
+
+    if config.ADMIN_SUBSCRIBE_ALL and contributoruserid != config.ADMIN_USER_ID:
+        if revision == 1:
+            subject = "page:%s new page: MichaelGagnon.wiki" % pagename
+        else:
+            subject = "page:%s new edit: MichaelGagnon.wiki" % pagename
+
+        sender = config.NOREPLY_EMAIL
+        recipient = config.ADMIN_EMAIL
+        body = url_for('core_gomden_blueprint.viewPage', pagename=pagename, revision=revision, _external=True)
+        send_email.delay(subject, sender, recipient, body)
+
+    #send_email
     return redirect(url_for('core_gomden_blueprint.viewPage', pagename=pagename))
 
 @core_gomden_blueprint.route("/save-permissions/<pagename>", methods=['POST'])

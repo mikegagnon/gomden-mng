@@ -506,6 +506,8 @@ def savePage(contributoruserid, pagename, content):
     c.close()
     conn.commit()
 
+    return revision
+
 # Optimization idea: run getExistingPagenames upon edit and store results:
 # slower writes / faster reads?
 @ErrorRollback

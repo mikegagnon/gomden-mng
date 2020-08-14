@@ -11,6 +11,11 @@ CAPTCHA_CONFIG = {
     "SECRET_CSRF_KEY": "captcha" + SECRET_KEY
 }
 
+ADMIN_USER_ID = 1
+
+# If true, then sends admin an email on all page creations and edits
+ADMIN_SUBSCRIBE_ALL = True
+
 MIN_USERNAME_LEN = 3
 MAX_USERNAME_LEN = 15
 
