@@ -33,7 +33,7 @@
         allowEdit: {{allowEdit}},
         ownerUsername: "{{ownerUsername}}",
         pageName: "{{pagename}}",
-        checkCaptchaUrl: "{{ url_for('core_gomden_blueprint.checkCaptcha', cHash=cHash, cText='') }}",
+        checkCaptchaUrl: "{{ url_for('core_gomden_blueprint.checkCaptcha', cHash=captchaHash, cText='') }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
         getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename) }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",

@@ -144,7 +144,7 @@ def hasPermissionToSavePage(pagename):
     return permissions["allowedits"]
 
 @core_gomden_blueprint.route("/checkCaptcha/<cHash>/<cText>", methods=['GET'])
-def checkCaptcha(pagename, cHash, cText):
+def checkCaptcha(cHash, cText):
     if not CAPTCHA.verify(cText, cHash):
         abort(403)
     else:
