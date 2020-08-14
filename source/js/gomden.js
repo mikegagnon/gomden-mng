@@ -85,7 +85,10 @@ class Gomden {
         const withHeaders = this.applyHeaders(escaped);
         const withExternalLinks = this.applyExternalLinks(withHeaders);
         const withLinks = this.applyLinks(withExternalLinks);
-        return withLinks.replace(/\n/g, "<br />");
+        const withBr = withLinks.replace(/\n/g, "<br>");
+        const withH1BrReplace = withBr.replace(/<\/h1>\s*(<br>\s*)+/g, "</h1>");
+        return withH1BrReplace.replace(/<\/h2>\s*(<br>\s*)+/g, "</h2>");
+
     }
 
     // From: https://www.codespeedy.com/replace-url-with-clickable-link-javascript/
