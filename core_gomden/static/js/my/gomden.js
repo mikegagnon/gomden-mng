@@ -144,8 +144,12 @@ var Gomden = function () {
                     $.get(url).success(function (data) {
                         $("#my-form").submit();
                     }).fail(function (data) {
-                        $("#captcha-div").prepend("<p><b>Sorry, you entered the wrong solution to the puzzle. Please try again. I know this is lame.</b>");
+                        $("#captcha-div").prepend("<p class=\"gomden-apology-captcha\"><b>Sorry, you entered the wrong solution to the puzzle. Please try again. I know this is lame.</b>");
                     });
+                });
+            } else {
+                $("#save-submit-button").click(function () {
+                    $("#my-form").submit();
                 });
             }
         }
@@ -155,12 +159,27 @@ var Gomden = function () {
     }, {
         key: "loadEditPageFailure",
         value: function loadEditPageFailure(data) {
-            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <div id=\"captcha-div\"></div>\n            <div><br><button class=\"btn btn-primary\" type=\"submit\">Save</button></div>\n            <p><br>" + this.config.editAgreement + "</p>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
+            $("#gomden-container").html("\n            <form action=\"" + this.config.savePageUrl + "\" method=\"post\" id=\"my-form\">\n            <textarea id=\"gomden-editor\" name=\"textedit\" rows=\"15\" style=\"width: 100%\"></textarea>\n            <div id=\"captcha-div\"></div>\n            <div><br><button id=\"save-submit-button\" class=\"btn btn-primary\" type=\"button\">Save</button></div>\n            <p><br>" + this.config.editAgreement + "</p>\n            <input type=\"hidden\" name=\"csrf_token\" value=\"" + CSRF_TOKEN + "\"/>\n            </form>\n        ");
             var content = "# This page does not exist\nClick the edit button (above) to create this page.\n";
             $("#gomden-editor").val(content);
 
+            var THIS = this;
             if (this.config.anonymous) {
-                $("#captcha-div").append("<div>\n                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>\n                <img class=\"simple-captcha-img\" src=\"data:image/png;base64, " + this.config.captchaImg + "\">\n                <input type=\"text\" class=\"simple-captcha-text\" name=\"captcha-text\">\n                <input type=\"hidden\" name=\"captcha-hash\" value=\"" + this.config.captchaHash + "\">\n            </div>");
+                $("#captcha-div").append("<div>\n                <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>\n                <img class=\"simple-captcha-img\" src=\"data:image/png;base64, " + this.config.captchaImg + "\">\n                <input id=\"gomden-captcha-user-text\" type=\"text\" class=\"simple-captcha-text\" name=\"captcha-text\">\n                <input type=\"hidden\" name=\"captcha-hash\" value=\"" + this.config.captchaHash + "\">\n            </div>");
+                $("#save-submit-button").click(function () {
+
+                    var url = THIS.config.checkCaptchaUrl + $("#gomden-captcha-user-text").val();
+
+                    $.get(url).success(function (data) {
+                        $("#my-form").submit();
+                    }).fail(function (data) {
+                        $("#captcha-div").prepend("<p class=\"gomden-apology-captcha\"><b>Sorry, you entered the wrong solution to the puzzle. Please try again. I know this is lame.</b>");
+                    });
+                });
+            } else {
+                $("#save-submit-button").click(function () {
+                    $("#my-form").submit();
+                });
             }
         }
     }, {

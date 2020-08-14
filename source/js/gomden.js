@@ -153,21 +153,23 @@ class Gomden {
                         $("#my-form").submit();
                     })
                     .fail(function(data) {
-                        $("#captcha-div").prepend(`<p><b>Sorry, you entered the wrong solution to the puzzle. Please try again. I know this is lame.</b>`);
+                        $("#captcha-div").prepend(`<p class="gomden-apology-captcha"><b>Sorry, you entered the wrong solution to the puzzle. Please try again. I know this is lame.</b>`);
                     });
             })
+        } else {
+            $("#save-submit-button").click(function(){
+                $("#my-form").submit();
+            });
         }
-
-
     }
 
     // Yes, this is janky
     loadEditPageFailure(data) {
         $("#gomden-container").html(`
-            <form action="${this.config.savePageUrl}" method="post">
+            <form action="${this.config.savePageUrl}" method="post" id="my-form">
             <textarea id="gomden-editor" name="textedit" rows="15" style="width: 100%"></textarea>
             <div id="captcha-div"></div>
-            <div><br><button class="btn btn-primary" type="submit">Save</button></div>
+            <div><br><button id="save-submit-button" class="btn btn-primary" type="button">Save</button></div>
             <p><br>${this.config.editAgreement}</p>
             <input type="hidden" name="csrf_token" value="${CSRF_TOKEN}"/>
             </form>
@@ -177,13 +179,30 @@ Click the edit button (above) to create this page.
 `;
         $("#gomden-editor").val(content);
 
+        const THIS = this;
         if (this.config.anonymous) {
             $("#captcha-div").append(`<div>
                 <p>Since you are not logged in, please type in the letters that you see in the graphic below.</p>
                 <img class="simple-captcha-img" src="data:image/png;base64, ${this.config.captchaImg}">
-                <input type="text" class="simple-captcha-text" name="captcha-text">
+                <input id="gomden-captcha-user-text" type="text" class="simple-captcha-text" name="captcha-text">
                 <input type="hidden" name="captcha-hash" value="${this.config.captchaHash}">
             </div>`);
+            $("#save-submit-button").click(function(){
+
+                const url = THIS.config.checkCaptchaUrl + $("#gomden-captcha-user-text").val();
+
+                $.get(url)
+                    .success(function(data) {
+                        $("#my-form").submit();
+                    })
+                    .fail(function(data) {
+                        $("#captcha-div").prepend(`<p class="gomden-apology-captcha"><b>Sorry, you entered the wrong solution to the puzzle. Please try again. I know this is lame.</b>`);
+                    });
+            })
+        } else {
+            $("#save-submit-button").click(function(){
+                $("#my-form").submit();
+            });
         }
     }
 

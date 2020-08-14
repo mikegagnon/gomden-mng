@@ -158,24 +158,22 @@ def savePage(pagename):
     if not hasPermissionToSavePage(pagename):
         abort(403)
 
-    # Temporary hack: disable anonymous edits
-    #if "userid" not in session:
-    #    abort(403)
+    # If the user is anonymous, do captcha things
+    userid = getUserOrAnonymousId()
+    if userid == 0:
+        c_hash = request.form.get('captcha-hash')
+        c_text = request.form.get('captcha-text')
+        if not CAPTCHA.verify(c_text, c_hash):
+            # TODO: good error message
+            print("bad hash")
+            abort(403)
 
+        if db.isCaptchaAlreadyUsed(c_text):
+            # TODO: good error message
+            print("replay")
+            abort(403)
 
-    c_hash = request.form.get('captcha-hash')
-    c_text = request.form.get('captcha-text')
-    if not CAPTCHA.verify(c_text, c_hash):
-        # TODO: good error message
-        print("bad hash")
-        abort(403)
-
-    if db.isCaptchaAlreadyUsed(c_text):
-        # TODO: good error message
-        print("replay")
-        abort(403)
-
-    db.markCaptchaAsUsed(c_text)
+        db.markCaptchaAsUsed(c_text)
 
     form = EmptyForm()
 
