@@ -144,6 +144,11 @@ def hasPermissionToSavePage(pagename):
     return permissions["allowedits"]
 
 @core_gomden_blueprint.route("/search", methods=['GET'])
+def searchPrompt():
+    form = EmptyForm()
+    return render_template("search-prompt.html", form=form)
+
+@core_gomden_blueprint.route("/search-result", methods=['GET'])
 def search():
     searchterm = request.args.get('searchterm')
     if searchterm == None:

@@ -52,6 +52,10 @@
 
           {% endif %}
 
+          <li class="nav-item {% block search_active %}{% endblock %}">
+              <a class="nav-link" href="{{ url_for('core_gomden_blueprint.searchPrompt') }}">Search</a>
+          </li>
+
           {% if wikipage == True %}
 
             <li class="nav-item {% block view_wikipage_active %}{% endblock %}">
@@ -69,6 +73,8 @@
             <li class="nav-item {% block history_wikipage_active %}{% endblock %}">
                 <a class="nav-link" href="{{ url_for('core_gomden_blueprint.historyPage', pagename=pagename) }}">History</a>
             </li>
+
+            
 
           {% endif %}
 
