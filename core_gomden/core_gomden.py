@@ -155,7 +155,7 @@ def search():
         abort(400)
     results = db.searchForMatchingPageNames(searchterm)
     form = EmptyForm()
-    return render_template("search-result.html", results=results, form=form)
+    return render_template("search-result.html", searchterm=searchterm, results=results, form=form)
 
 @core_gomden_blueprint.route("/checkCaptcha/<cHash>/<cText>", methods=['GET'])
 def checkCaptcha(cHash, cText):

@@ -10,6 +10,7 @@
 {% block content %}
 
 <div id="gomden-container" class="container">
+<p>Search results for: {{ searchterm }}</p>
 {% if results|length %}
     {% for result in results %}
         <a href="{{url_for('core_gomden_blueprint.viewPage', pagename=result)}}">page:{{ result }}</a><br>
