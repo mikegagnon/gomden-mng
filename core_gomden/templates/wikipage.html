@@ -9,7 +9,24 @@
 
 {% block content %}
 
+
+
+<div class="container gomden-disabled-text">
+
+<p>Viewing 
+<a style="color:#a6ccff" href="{{url_for('core_gomden_blueprint.viewPage', pagename=pagename)}}">page:{{ pagename }}</a>.
+{% if parents|length %}
+    Pages that link to this page:
+    {% for parent in parents %}
+        <a style="margin-left: 10px; color:#a6ccff" href="{{url_for('core_gomden_blueprint.viewPage', pagename=parent)}}">page:{{ parent }}</a>{% endfor %}.
+{% else %}
+    <!--<p>No pages link to this page.</p>-->
+{% endif %}
+</p>
+</div>
 <div id="gomden-container" class="container">
+
+
 </div>
 
 {% endblock %}

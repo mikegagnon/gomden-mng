@@ -42,7 +42,12 @@ def viewPage(pagename, revision=None):
         except:
             abort(404)
 
-    return render_template("wikipage.html", license=config.LICENSE, pagename=pagename, wikipage=True, form=form, revision=revision)
+    if revision == 0:
+        parents = db.searchForMatchingPageNames("page:" + pagename)
+    else:
+        parents = []
+
+    return render_template("wikipage.html", parents=parents, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, revision=revision)
 
 @core_gomden_blueprint.route("/get-page/<pagename>/<revision>")
 @core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])

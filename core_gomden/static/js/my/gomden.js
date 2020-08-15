@@ -55,7 +55,8 @@ var Gomden = function () {
         value: function loadPageSuccess(data) {
             console.log(data);
             var html = this.wikipageToHtml(data.page.content);
-            var withTitle = "<span class='gomden-title-page-name'>Viewing page:" + data.page.pagename + "</span><br><br>" + html;
+            //const withTitle = `<span class='gomden-title-page-name'>Viewing page:${data.page.pagename}</span><br><br>` + html;
+            var withTitle = html;
             $("#gomden-container").html(withTitle);
             $("#gomden-container .gomden-page-link").each(function (i, value) {
                 var pagename = $(value).text().slice(5);
