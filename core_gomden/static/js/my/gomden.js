@@ -82,13 +82,19 @@ var Gomden = function () {
             return withExternalLinks.replace(/page:([0-9a-z-]{3,100})/mg, "<a class=\"gomden-page-link\" href='" + this.config.viewPageUrl + "$1'>page:$1</a>");
         }
     }, {
+        key: "applyHashtags",
+        value: function applyHashtags(withLinks) {
+            return withLinks.replace(/#([0-9a-z-]{1,100})/mg, "<a class=\"gomden-hash-link\" href='" + this.config.searchUrl + "?searchterm=%23$1'>#$1</a>");
+        }
+    }, {
         key: "wikipageToHtml",
         value: function wikipageToHtml(content) {
             var escaped = this.escapeHtml(content);
             var withHeaders = this.applyHeaders(escaped);
             var withExternalLinks = this.applyExternalLinks(withHeaders);
             var withLinks = this.applyLinks(withExternalLinks);
-            var withBr = withLinks.replace(/\n/g, "<br>");
+            var withHash = this.applyHashtags(withLinks);
+            var withBr = withHash.replace(/\n/g, "<br>");
             var withH1BrReplace = withBr.replace(/<\/h1>\s*(<br>\s*)+/g, "</h1>");
             return withH1BrReplace.replace(/<\/h2>\s*(<br>\s*)+/g, "</h2>");
         }

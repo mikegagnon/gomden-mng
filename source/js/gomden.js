@@ -80,12 +80,17 @@ class Gomden {
         return withExternalLinks.replace(/page:([0-9a-z-]{3,100})/mg, `<a class="gomden-page-link" href='${this.config.viewPageUrl}$1'>page:$1</a>`)
     }
 
+    applyHashtags(withLinks) {
+        return withLinks.replace(/#([0-9a-z-]{1,100})/mg, `<a class="gomden-hash-link" href='${this.config.searchUrl}?searchterm=%23$1'>#$1</a>`)
+    }
+
     wikipageToHtml(content) {
         const escaped = this.escapeHtml(content);
         const withHeaders = this.applyHeaders(escaped);
         const withExternalLinks = this.applyExternalLinks(withHeaders);
         const withLinks = this.applyLinks(withExternalLinks);
-        const withBr = withLinks.replace(/\n/g, "<br>");
+        const withHash = this.applyHashtags(withLinks);
+        const withBr = withHash.replace(/\n/g, "<br>");
         const withH1BrReplace = withBr.replace(/<\/h1>\s*(<br>\s*)+/g, "</h1>");
         return withH1BrReplace.replace(/<\/h2>\s*(<br>\s*)+/g, "</h2>");
 

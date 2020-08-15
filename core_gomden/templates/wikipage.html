@@ -25,6 +25,7 @@
         license: "{{license | safe }}",
         pageName: "{{pagename}}",
         revision: {{revision}},
+        searchUrl: "{{ url_for('core_gomden_blueprint.search') }}",
         viewPageUrl: "{{ url_for('core_gomden_blueprint.viewPage', pagename='', revision=None) }}",
         savePageUrl: "{{ url_for('core_gomden_blueprint.savePage', pagename=pagename) }}",
         getPageUrl: "{{ url_for('core_gomden_blueprint.getPage', pagename=pagename, revision=None) }}",
