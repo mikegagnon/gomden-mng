@@ -143,6 +143,15 @@ def hasPermissionToSavePage(pagename):
 
     return permissions["allowedits"]
 
+@core_gomden_blueprint.route("/search", methods=['GET'])
+def search():
+    searchterm = request.args.get('searchterm')
+    if searchterm == None:
+        abort(400)
+    results = db.searchForMatchingPageNames(searchterm)
+    form = EmptyForm()
+    return render_template("search-result.html", results=results, form=form)
+
 @core_gomden_blueprint.route("/checkCaptcha/<cHash>/<cText>", methods=['GET'])
 def checkCaptcha(cHash, cText):
     if not CAPTCHA.verify(cText, cHash):
