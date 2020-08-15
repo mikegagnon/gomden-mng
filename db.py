@@ -475,6 +475,38 @@ def savePermissions(pagename, allowEdits):
     conn.commit()
 
 @ErrorRollback
+def searchForMatchingPageNames(searchTerm):
+    conn = getConn()
+    c = conn.cursor()
+
+    # Is doing   "%" +   a good idea?
+    searchTerm = "%" + searchTerm.lower() + "%"
+
+    c.execute("""
+        SELECT p.pagename, p.revision
+        FROM pages p
+        INNER JOIN (
+            SELECT MAX(revision) AS maxrevision, pagename AS maxpagename
+            FROM pages
+            GROUP BY pagename
+        ) pp ON p.revision = pp.maxrevision AND p.pagename = pp.maxpagename
+        WHERE LOWER(p.content) LIKE %s
+    """, (searchTerm,))
+
+    results = c.fetchall()
+    if results == None:
+        results = []
+
+    results = [record[0] for record in results]
+
+    c.close()
+    conn.commit()
+
+    return results
+
+
+
+@ErrorRollback
 def savePage(contributoruserid, pagename, content):
     conn = getConn()
     c = conn.cursor()
