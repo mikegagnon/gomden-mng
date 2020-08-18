@@ -56,7 +56,7 @@ def forgot():
 
     if request.method == "GET":
         debug(funcname, 'request.method == "GET"')
-        return render_template("forgot-password.html", form=form, message=None)
+        return render_template("forgot-password.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=None)
     
     if not form.validate_on_submit():
         error(funcname, 'not form.validate_on_submit()')
@@ -66,13 +66,13 @@ def forgot():
 
     if not config.saneEmail(email):
         info(funcname, 'not saneEmail(email)')
-        return render_template("message.html", form=form, message=config.FORGOT_PASSWORD_MESSAGE)
+        return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=config.FORGOT_PASSWORD_MESSAGE)
 
     user = db.getConfirmedUserByEmail(email)
 
     if not user:
         info(funcname, 'not user')
-        return render_template("message.html", form=form, message=config.FORGOT_PASSWORD_MESSAGE)
+        return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=config.FORGOT_PASSWORD_MESSAGE)
 
     token = timedSerializer.dumps(email, salt="forgot-password")
 
@@ -89,7 +89,7 @@ def forgot():
     info(funcname, f"sending password-reset email to user")
     send_email.delay(subject, sender, recipient, body)
 
-    return render_template("message.html", form=form, message=config.FORGOT_PASSWORD_MESSAGE)
+    return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=config.FORGOT_PASSWORD_MESSAGE)
 
 class CreateAccountForm(FlaskForm):
     username = StringField("Username")
@@ -182,11 +182,11 @@ def create_account():
 
     if "userid" in session:
         debug(funcname, 'Already logged in')
-        return render_template("already_loggedin.html", form=form)
+        return render_template("already_loggedin.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form)
 
     if request.method == "GET":
         debug(funcname, 'request.method == "GET"')
-        return render_template("create-account.html", captcha=captcha, form=form, message=None)
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message=None)
     
     if not form.validate_on_submit():
         error(funcname, 'not form.validate_on_submit()')
@@ -202,44 +202,44 @@ def create_account():
     c_text = request.form.get('captcha-text')
     if not CAPTCHA.verify(c_text, c_hash):
         debug(funcname, 'bad captcha response')
-        return render_template("create-account.html", captcha=captcha, form=form, message="I apologize, but your solution to the puzzle is not correct. I know this is annoying, but please try again.")
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message="I apologize, but your solution to the puzzle is not correct. I know this is annoying, but please try again.")
     
     if db.isCaptchaAlreadyUsed(c_text):
         # TODO: good error message
         print("replay")
-        return render_template("create-account.html", captcha=captcha, form=form, message="I apologize, but your solution to the puzzle is odd. I know this is annoying, but please try again.")
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message="I apologize, but your solution to the puzzle is odd. I know this is annoying, but please try again.")
 
     db.markCaptchaAsUsed(c_text)
 
     if not config.saneUsername(username):
         debug(funcname, 'not saneUsername(username)')
-        return render_template("create-account.html", captcha=captcha, form=form, message="Invalid username.")
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message="Invalid username.")
 
     if not config.saneDisplayName(displayname):
         debug(funcname, 'not saneDisplayName(displayname)')
-        return render_template("create-account.html", captcha=captcha, form=form, message="Invalid display name.")
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message="Invalid display name.")
 
     if not config.saneEmail(email):
         debug(funcname, 'not saneEmail(email)')
-        return render_template("create-account.html", captcha=captcha, form=form, message="Invalid email address.")
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message="Invalid email address.")
 
     if not config.sanePassword(password1) or not config.sanePassword(password2):
         debug(funcname, f"password(s) aren't sane")
         message = """
             Your password must be at least %d characters long
             """ % config.MIN_PASSWORD_LEN
-        return render_template("create-account.html", captcha=captcha, form=form, message=message)
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message=message)
 
     if password1 != password2:
         debug(funcname, f"passwords don't match")
         message = "Your passwords do not match."
-        return render_template("create-account.html", captcha=captcha, form=form, message=message)
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message=message)
 
     user = db.getConfirmedUserByUsername(username)
     if user:
         debug(funcname, "username already taken: %s" % username)
         message = "The username @" + username + " is already taken."
-        return render_template("create-account.html", captcha=captcha, form=form, message=message)
+        return render_template("create-account.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, message=message)
 
     # We know: username is not taken
 
@@ -268,7 +268,7 @@ def create_account():
         # We know: username is not taken, but this email address is aleady confirmed
         bcrypt.generate_password_hash("prevent side channel")
         sendCannotCreateAccount(email)
-        return render_template("create-account-success.html", captcha=captcha, form=form, email=email)
+        return render_template("create-account-success.html", styled_domain_name=STYLED_DOMAIN_NAME, captcha=captcha, form=form, email=email)
 
     # If this email address and username are neither confirmed
     else:
@@ -298,7 +298,7 @@ def create_account():
             bcrypt.generate_password_hash("prevent side channel")
             sendConfirmationEmail(username, email)
 
-            return render_template("create-account-success.html", form=form, email=email)
+            return render_template("create-account-success.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, email=email)
         # If this email-username pair does not have a record in the database
         else:
             # We know: username is not taken, and this email address is not confirmed,
@@ -308,7 +308,7 @@ def create_account():
             db.createUnconfirmedAccount(username, displayname, email, password_hash)
             sendConfirmationEmail(username, email)
 
-            return render_template("create-account-success.html", form=form, email=email)
+            return render_template("create-account-success.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, email=email)
 
 @account_blueprint.route("/confirm-email/<token>", methods=["GET"])
 def confirm_email(token):
@@ -326,10 +326,10 @@ def confirm_email(token):
     if user:
         # If the applicant has already registered this username/email pair
         if user["email"] == email:
-            return render_template("message.html", form=form, message="You have already confirmed your account for username @%s." % username)
+            return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message="You have already confirmed your account for username @%s." % username)
         # If someone else swooped in and registered this username
         else:
-            return render_template("message.html", form=form, message="Sorry! Someone else registered the username @%s while we were waiting for you to click the confirmation link." % username)
+            return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message="Sorry! Someone else registered the username @%s while we were waiting for you to click the confirmation link." % username)
 
     user = db.getUnconfirmedUserByUsernameEmail(username, email)
     if not user:
@@ -351,7 +351,7 @@ def confirm_email(token):
     sendNewRegisteredEmailToAdmin(username)
 
     info(funcname, "success")
-    return render_template("message.html", form=form, message="You have confirmed your account. You are now logged in.")
+    return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message="You have confirmed your account. You are now logged in.")
 
 @account_blueprint.route("/logout", methods=["GET", "POST"])
 def logout():
@@ -360,16 +360,16 @@ def logout():
     form = EmptyForm(request.form)
 
     if "userid" not in session:
-        return render_template("message.html", form=form, message="You are already logged out.")
+        return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message="You are already logged out.")
 
     if request.method == "GET":
-        return render_template("logout.html", form=form)
+        return render_template("logout.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form)
 
     if not form.validate_on_submit():
         abort(403)
 
     pop_session()
-    return render_template("message.html", form=form, message="You are now logged out.")
+    return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message="You are now logged out.")
 
 @account_blueprint.route("/login", methods=["GET", "POST"])
 def login():
@@ -379,11 +379,11 @@ def login():
 
     if "userid" in session:
         debug(funcname, '"userid" in session')
-        return render_template("already_loggedin.html", form=form)
+        return render_template("already_loggedin.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form)
 
     if request.method == "GET":
         debug(funcname, 'request.method == "GET"')
-        return render_template("login.html", form=form, message=None)
+        return render_template("login.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=None)
 
     if not form.validate_on_submit():
         error(funcname, 'not form.validate_on_submit()')
@@ -395,14 +395,14 @@ def login():
     if (not config.saneEmail(usernameOrEmail) and not config.saneUsername(usernameOrEmail)) or not config.sanePassword(submitted_password):
         info(funcname, "something isn't sane")
         bcrypt.check_password_hash(config.DUMMY_HASH, "foo")
-        return render_template("login.html", form=form, message=config.BAD_PASSWORD_MESSAGE)
+        return render_template("login.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=config.BAD_PASSWORD_MESSAGE)
 
     user = db.getConfirmedUserByUsernameOrEmail(usernameOrEmail)
 
     if not user:
         info(funcname, "not user")
         bcrypt.check_password_hash(config.DUMMY_HASH, "foo")
-        return render_template("login.html", form=form, message=config.BAD_PASSWORD_MESSAGE)
+        return render_template("login.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=config.BAD_PASSWORD_MESSAGE)
 
     if bcrypt.check_password_hash(user["password_hash"], submitted_password):
         session["userid"] = user["userid"]
@@ -414,7 +414,7 @@ def login():
         return redirect(url_for("landing_blueprint.landing"))
     else:
         debug(funcname, "bad password")
-        return render_template("login.html", form=form, message=config.BAD_PASSWORD_MESSAGE)
+        return render_template("login.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=config.BAD_PASSWORD_MESSAGE)
 
 class ResetPasswordForm(FlaskForm):
     password1 = PasswordField("Password1")
@@ -434,7 +434,7 @@ def reset_password(token):
         debug(funcname, "token has already been used")
         form = ForgotForm()
         message = "Your forgot-password link has already been used. If you would like to reset your password again, please submit this form"
-        return render_template("forgot-password.html", form=form, message=message)
+        return render_template("forgot-password.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=message)
 
     user = db.getConfirmedUserByEmail(email)
 
@@ -446,7 +446,7 @@ def reset_password(token):
     form = ResetPasswordForm(request.form)
 
     # PUNT: is it secure to put the token in the form?
-    return render_template("reset-password.html", email=email, form=form, token=token, message=None)
+    return render_template("reset-password.html", styled_domain_name=STYLED_DOMAIN_NAME, email=email, form=form, token=token, message=None)
 
 @account_blueprint.route("/do-password-reset/<token>", methods=["POST"])
 def do_password_reset(token):
@@ -462,7 +462,7 @@ def do_password_reset(token):
         debug(funcname, "token has already been used")
         form = ForgotForm()
         message = "Your forgot-password link has already been used. If you would like to reset your password again, please submit this form."
-        return render_template("forgot-password.html", form=form, message=message)
+        return render_template("forgot-password.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message=message)
 
     user = db.getConfirmedUserByEmail(email)
 
@@ -478,11 +478,11 @@ def do_password_reset(token):
 
     if not config.sanePassword(password1) or not config.sanePassword(password2):
         debug(funcname, f"password(s) aren't sane")
-        return render_template("reset-password.html", email=email, form=form, token=token, message="Your password must be at least %d characters long." % config.MIN_PASSWORD_LEN)
+        return render_template("reset-password.html", styled_domain_name=STYLED_DOMAIN_NAME, email=email, form=form, token=token, message="Your password must be at least %d characters long." % config.MIN_PASSWORD_LEN)
 
     if password1 != password2:
         debug(funcname, f"passwords don't match")
-        return render_template("reset-password.html", email=email, form=form, token=token, message="Your passwords do not match.")
+        return render_template("reset-password.html", styled_domain_name=STYLED_DOMAIN_NAME, email=email, form=form, token=token, message="Your passwords do not match.")
 
 
     password_hash = bcrypt.generate_password_hash(password1).decode('utf-8')
@@ -496,5 +496,5 @@ def do_password_reset(token):
 
     db.markTokenUsed(token)
 
-    return render_template("message.html", form=form, message="You have reset your password. You are now logged in.")
+    return render_template("message.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form, message="You have reset your password. You are now logged in.")
 

@@ -11,6 +11,7 @@ import cgi
 
 import db
 import config
+from config import STYLED_DOMAIN_NAME
 from gomden_log import *
 import re
 
@@ -47,7 +48,7 @@ def viewPage(pagename, revision=None):
     else:
         parents = []
 
-    return render_template("wikipage.html", parents=parents, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, revision=revision)
+    return render_template("wikipage.html", styled_domain_name=STYLED_DOMAIN_NAME, parents=parents, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, revision=revision)
 
 @core_gomden_blueprint.route("/get-page/<pagename>/<revision>")
 @core_gomden_blueprint.route("/get-page/<pagename>", methods=['GET'])
@@ -116,9 +117,9 @@ def editPage(pagename):
         #return render_template("no-edit.html", anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
 
     if hasPermissionToSavePage(pagename):
-        return render_template("edit-wikipage.html", anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="true", ownerUsername=owner["username"])
+        return render_template("edit-wikipage.html", styled_domain_name=STYLED_DOMAIN_NAME, anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="true", ownerUsername=owner["username"])
     else:
-        return render_template("edit-wikipage.html", anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
+        return render_template("edit-wikipage.html", styled_domain_name=STYLED_DOMAIN_NAME, anonymous=anonymous, captchaHash=captchaHash, captchaImg=captchaImg, editAgreement=config.EDIT_AGREEMENT, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, allowEdit="false", ownerUsername=owner["username"])
 
 def getUserOrAnonymousId():
     if "userid" in session:
@@ -151,7 +152,7 @@ def hasPermissionToSavePage(pagename):
 @core_gomden_blueprint.route("/search", methods=['GET'])
 def searchPrompt():
     form = EmptyForm()
-    return render_template("search-prompt.html", form=form)
+    return render_template("search-prompt.html", styled_domain_name=STYLED_DOMAIN_NAME, form=form)
 
 @core_gomden_blueprint.route("/search-result", methods=['GET'])
 def search():
@@ -160,7 +161,7 @@ def search():
         abort(400)
     results = db.searchForMatchingPageNames(searchterm)
     form = EmptyForm()
-    return render_template("search-result.html", searchterm=searchterm, results=results, form=form)
+    return render_template("search-result.html", styled_domain_name=STYLED_DOMAIN_NAME, searchterm=searchterm, results=results, form=form)
 
 @core_gomden_blueprint.route("/checkCaptcha/<cHash>/<cText>", methods=['GET'])
 def checkCaptcha(cHash, cText):
@@ -274,7 +275,7 @@ def permissionsPage(pagename):
         allowEdits = "false"
         
     form = EmptyForm()
-    return render_template("permissions-wikipage.html", license=config.LICENSE, allowEdits=allowEdits, userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
+    return render_template("permissions-wikipage.html", styled_domain_name=STYLED_DOMAIN_NAME, license=config.LICENSE, allowEdits=allowEdits, userid=userid, username=username, ownerUserid=owner["userid"], ownerUsername=owner["username"], pagename=pagename, wikipage=True, form=form)
 
 @core_gomden_blueprint.route("/history/<pagename>", methods=['GET'])
 def historyPage(pagename):
@@ -284,4 +285,4 @@ def historyPage(pagename):
     history = json.dumps(db.getHistory(pagename))
 
     form = EmptyForm()
-    return render_template("history-wikipage.html", license=config.LICENSE, pagename=pagename, wikipage=True, form=form, history=history)
+    return render_template("history-wikipage.html", styled_domain_name=STYLED_DOMAIN_NAME, license=config.LICENSE, pagename=pagename, wikipage=True, form=form, history=history)
