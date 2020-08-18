@@ -9,6 +9,8 @@ from itsdangerous import URLSafeTimedSerializer
 from gomden_log import *
 import config
 import db
+from config import STYLED_DOMAIN_NAME
+
 
 bcrypt = None
 send_email = None
@@ -79,10 +81,10 @@ def forgot():
         token=token,
         _external=True)
 
-    subject = "MichaelGagnon.wiki: reset your password"
+    subject = f"{STYLED_DOMAIN_NAME}: reset your password"
     sender = config.NOREPLY_EMAIL
     recipient = email
-    body = ("Follow this link to reset your password with MichaelGagnon.wiki: " + reset_url)
+    body = (f"Follow this link to reset your password with {STYLED_DOMAIN_NAME}: " + reset_url)
 
     info(funcname, f"sending password-reset email to user")
     send_email.delay(subject, sender, recipient, body)
@@ -105,23 +107,23 @@ def sendConfirmationEmail(username, email):
         token=token,
         _external=True)
 
-    subject = "MichaelGagnon.wiki: please confirm your email"
+    subject = f"{STYLED_DOMAIN_NAME}: please confirm your email"
     sender = config.NOREPLY_EMAIL
     recipient = email
-    body = ("Follow this link to confirm your new account with MichaelGagnon.wiki: " +
+    body = ("Follow this link to confirm your new account with : " +
             confirm_url)
 
     send_email.delay(subject, sender, recipient, body)
 
 def sendCannotCreateAccount(email):
-    subject = "MichaelGagnon.wiki: Cannot create account"
+    subject = f"{STYLED_DOMAIN_NAME}: Cannot create account"
     sender = config.NOREPLY_EMAIL
     recipient = email
-    body = ("You (or someone else), attempted to register a new account with your email address. Did you forget your username or password? If so, follow this link to reset your password for MichaelGagnon.wiki: " + url_for("account_blueprint.forgot", _external=True))
+    body = (f"You (or someone else), attempted to register a new account with your email address. Did you forget your username or password? If so, follow this link to reset your password for {STYLED_DOMAIN_NAME}: " + url_for("account_blueprint.forgot", _external=True))
     send_email.delay(subject, sender, recipient, body)
 
 def sendNewRegisteredEmailToAdmin(username):
-    subject = "MichaelGagnon.wiki new user registered"
+    subject = f"{STYLED_DOMAIN_NAME} new user registered"
     sender = config.NOREPLY_EMAIL
     recipient = config.ADMIN_EMAIL
     body = f"A new user registered: @{username}"
