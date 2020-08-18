@@ -3,7 +3,7 @@ import os
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 ADMIN_EMAIL = os.environ["ADMIN_EMAIL"]
-NOREPLY_EMAIL = "noreply@michaelgagnon.wiki"
+NOREPLY_EMAIL = os.environ["NOREPLY_EMAIL"]
 FLASK_EMAIL_SERVER = os.environ["FLASK_EMAIL_SERVER"]
 FLASK_EMAIL_PASSWORD = os.environ["FLASK_EMAIL_PASSWORD"]
 REDIS_URL = os.environ["REDIS_URL"]
