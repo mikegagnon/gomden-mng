@@ -209,9 +209,9 @@ def savePage(pagename):
 
     if config.ADMIN_SUBSCRIBE_ALL and contributoruserid != config.ADMIN_USER_ID:
         if revision == 1:
-            subject = "page:%s new page: MichaelGagnon.wiki" % pagename
+            subject = f"page:{pagename} new page: {STYLED_DOMAIN_NAME}"
         else:
-            subject = "page:%s new edit: MichaelGagnon.wiki" % pagename
+            subject = f"page:{pagename} new edit: {STYLED_DOMAIN_NAME}"
 
         sender = config.NOREPLY_EMAIL
         recipient = config.ADMIN_EMAIL
